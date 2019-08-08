@@ -1,0 +1,38 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+#editor
+*.sublime-project
+*.sublime-workspace
+
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/build
+/data
+/dist
+torchie-desktop-v*.tgz
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+electron-builder.env
+torchie-desktop.iml
+/.vscode
+
+*debug.*log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.yarnclean
+.idea
+.vscode/
+torchie-desktop.iml
+
+.jshintrc
