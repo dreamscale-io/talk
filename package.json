@@ -1,0 +1,10 @@
+{
+  "name": "rt-flow",
+  "version": "0.0.1",
+  "description": "Realtime Flow Server",
+  "main": "index.js",
+  "repository": "https://github.com/dreamscale-io/rt-flow.git",
+  "author": "1-14x0r <kara@dreamscale.io>",
+  "license": "MIT",
+  "private": true
+}
