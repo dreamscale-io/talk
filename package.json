@@ -6,5 +6,9 @@
   "repository": "https://github.com/dreamscale-io/rt-flow.git",
   "author": "1-14x0r <kara@dreamscale.io>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
 }
