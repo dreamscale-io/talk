@@ -1,21 +1,14 @@
-'use strict';
-
-const express = require('express');
-const socketIO = require('socket.io');
-const path = require('path');
-
 const PORT = process.env.PORT || 3000;
-const INDEX = path.join(__dirname, 'index.html');
 
-const server = express()
-    .use((req, res) => res.sendFile(INDEX) )
-    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const server = require('http').createServer();
 
-const io = socketIO(server);
-
-io.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('disconnect', () => console.log('Client disconnected'));
+const io = require('socket.io')(server, {
+    path: '/test',
+    serveClient: false,
+    // below are engine.IO options
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    cookie: false
 });
 
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+server.listen(PORT);
