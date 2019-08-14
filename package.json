@@ -2,12 +2,14 @@
   "name": "rt-flow",
   "version": "0.0.1",
   "description": "Realtime Flow Server",
-  "main": "index.js",
+  "main": "Server.js",
   "repository": "https://github.com/dreamscale-io/rt-flow.git",
   "author": "1-14x0r <kara@dreamscale.io>",
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "chalk": "^2.4.2",
     "express": "^4.17.1",
     "socket.io": "^2.2.0"
   }
