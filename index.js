@@ -11,6 +11,10 @@ const memberNsp = require('socket.io')(server, {
     cookie: false
 });
 
+memberNsp.on('connection', function(socket){
+    console.log('someone connected');
+});
+
 const teamNsp = require('socket.io')(server, {
     path: '/team',
     serveClient: false,
@@ -30,3 +34,5 @@ const organizationNsp = require('socket.io')(server, {
 });
 
 server.listen(PORT);
+
+console.log("server started on port " + PORT);
