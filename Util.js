@@ -1,6 +1,17 @@
 const chalk = require("chalk");
 
 module.exports = class Util {
+    static logSocketIORequest(type, message) {
+        if (process.env.ENV === "test") return;
+        console.log(
+            chalk.magenta("[API-DEV]") +
+            " " +
+            type +
+            " -> " +
+            message
+        );
+    }
+
     static logPostRequest(type, url, dtoReq, dtoRes) {
         if (process.env.ENV === "test") return;
         console.log(

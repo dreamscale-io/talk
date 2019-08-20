@@ -4,31 +4,59 @@ const chalk = require("chalk"),
     socketIO = require("socket.io"),
     ChannelEmit = require("./resource/ChannelEmit");
 
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server, {
+    serveClient: false,
+    // below are engine.IO options
+    allowUpgrades: true,
+    pingInterval: 10000,
+    pingTimeout: 5000,
+    transports: ["polling", "websocket"],
+    cookie: false
+});
+
 const Server = (module.exports = class Server {
     constructor() {
+
+        /// initialize
         this.port = process.env.PORT || 5050;
         console.log(
             chalk.blue("Starting RealTime Flow...")
         );
-        this.express = express()
-            .use(bodyParser.json())
-            .use(bodyParser.urlencoded({extended: true}))
-            .post("/channel/emit", new ChannelEmit())
-            .listen(this.port, () => {
-                console.log(`Listening on ${this.port}`);
-            });
 
-        const io = socketIO(this.express);
+        /// setup
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({extended: true}));
+
+        /// restful
+        app.post("/channel/:channelId/emit", new ChannelEmit(io));
+
+        // TODO make requen to htm-flow to authenticate the handshake query
+
+        /// socket.io
         io.on("connection", (socket) => {
             console.log("Client connected " + socket.id);
-            socket.on("disconnect", (socket) => {
-                console.log("Client disconnected " + socket.id)
+            console.log(socket.handshake);
+
+            socket.on('error', (error) => {
+                console.log("Client error : " + socket.id + " -> " + error);
+            });
+            socket.on('disconnecting', (reason) => {
+                // still in rooms
+                console.log("Client disconnecting : " + socket.id + " -> " + reason);
+            });
+            socket.on("disconnect", (reason) => {
+                console.log("Client disconnected : " + socket.id + " -> " + reason);
             });
         });
-        // this.resources = {
-        //     channelEmit: new ChannelEmit(this.express, "/channel/emit")
-        // };
-        // this.express.listen(this.port);
+
+
+
+        /// start the server
+        server.listen(this.port, () => {
+            console.log(`Listening on ${this.port}`);
+        });
     }
 });
 

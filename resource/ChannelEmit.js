@@ -3,11 +3,21 @@ const ChannelEmitDto = require("../dto/ChannelEmitDto");
 const SimpleStatusDto = require("../dto/SimpleStatusDto");
 
 module.exports = class ChannelEmit {
-    constructor() {
+    constructor(io) {
         return (req, res) => {
-            // res.send('POST request to homepage');
             try {
+                let channelId = req.params.channelId;
                 let dtoReq = new ChannelEmitDto(req.body);
+
+                Util.logSocketIORequest(dtoReq.eventName, dtoReq.args);
+
+                ///shows all of the sockets omn the server
+                // console.log(io.sockets);
+
+                io.to(channelId).emit('send_message', 'hello world');
+
+                // io.to(channelId).emit(dtoReq.eventName, dtoReq.args);
+
                 let dtoRes = new SimpleStatusDto({
                     status: "SENT",
                     message: "message sent to group",
