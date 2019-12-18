@@ -1,10 +1,10 @@
 {
-  "name": "rt-flow",
-  "version": "0.0.1",
-  "description": "Realtime Flow Server",
+  "name": "talk",
+  "version": "0.0.2",
+  "description": "Talk Service Server",
   "main": "Server.js",
-  "repository": "https://github.com/dreamscale-io/rt-flow.git",
-  "author": "1-14x0r <kara@dreamscale.io>",
+  "repository": "https://github.com/dreamscale-io/talk.git",
+  "author": "ZoeDreams <zoe@dreamscale.io>",
   "license": "MIT",
   "private": true,
   "dependencies": {
