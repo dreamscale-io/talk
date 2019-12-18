@@ -1,5 +1,5 @@
-# rt-flow
-Realtime Flow Server
+# talk
+Realtime P2P Router
 
 ## Specificiation:
 - Store socket and session for torchie clients
