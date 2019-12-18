@@ -22,7 +22,7 @@ const Server = (module.exports = class Server {
     /// initialize
     this.port = process.env.PORT || 5050;
     console.log(
-      chalk.blue("Starting RealTime Flow...")
+      chalk.blue("Starting Talk Server...")
     );
 
     /// setup
