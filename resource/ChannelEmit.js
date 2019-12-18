@@ -3,7 +3,7 @@ const ChannelEmitDto = require("../dto/ChannelEmitDto");
 const SimpleStatusDto = require("../dto/SimpleStatusDto");
 
 module.exports = class ChannelEmit {
-  constructor(io) {
+  constructor(server) {
     return (req, res) => {
       try {
         let channelId = req.params.channelId;
@@ -12,11 +12,10 @@ module.exports = class ChannelEmit {
         Util.logSocketIORequest(dtoReq.eventName, dtoReq.args);
 
         ///shows all of the sockets omn the server
-        // console.log(io.sockets);
+        // console.log(server.connections.get(channelId));
+        // console.log(dtoReq);
 
-        io.to(channelId).emit('send_message', 'hello world');
-
-        // io.to(channelId).emit(dtoReq.eventName, dtoReq.args);
+        server.io.to(server.connections.get(channelId)).emit(dtoReq.eventName, dtoReq.args);
 
         let dtoRes = new SimpleStatusDto({
           status: "SENT",

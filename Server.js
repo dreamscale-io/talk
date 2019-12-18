@@ -17,9 +17,14 @@ var io = require('socket.io')(server, {
 });
 
 const Server = (module.exports = class Server {
+
   constructor() {
 
     /// initialize
+    this.app = app;
+    this.server = server;
+    this.io = io;
+    this.connections = new Map();
     this.port = process.env.PORT || 5050;
     console.log(
       chalk.blue("Starting Talk Server...")
@@ -30,7 +35,7 @@ const Server = (module.exports = class Server {
     app.use(bodyParser.urlencoded({extended: true}));
 
     /// restful
-    app.post("/channel/:channelId/emit", new ChannelEmit(io));
+    app.post("/channel/:channelId/emit", new ChannelEmit(this));
 
     // TODO make request to htm-flow to authenticate the handshake query
 
@@ -38,7 +43,11 @@ const Server = (module.exports = class Server {
     io.on("connection", (socket) => {
       console.log("Client connected " + socket.id);
       console.log(socket.handshake);
+      console.log("Storing connectionId : " + socket.handshake.query.connectionId + " -> " + socket.id);
 
+      this.connections.set(socket.handshake.query.connectionId, socket.id);
+
+      // GLOBAL - all channels are notified here
       socket.on('error', (error) => {
         console.log("Client error : " + socket.id + " -> " + error);
       });
