@@ -13,6 +13,10 @@ module.exports = class SimpleStatusDto {
     }
   }
 
+  toString() {
+    JSON.stringify(this);
+  }
+
   isValid() {
     if (this.status === "VALID") return true;
     return false;

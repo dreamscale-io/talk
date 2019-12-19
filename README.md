@@ -1,4 +1,4 @@
-# talk
+# talkServer
 Realtime P2P Router
 
 # How to Setup & Run
@@ -17,7 +17,7 @@ To run the app, we use the heroku client that runs the Procfile
 ## Specificiation:
 - Store socket and session for torchie clients
 - use -> https://github.com/wcamarao/session.socket.io
-- Create socket layer for server commands and messaging
+- Create socket layer for talkServer commands and messaging
 - Create API for broadcast notification to all clients
 - Create API for private notification to a specific client
 - Create API for private message to a specific client

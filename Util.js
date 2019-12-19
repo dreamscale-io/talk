@@ -1,21 +1,35 @@
 const chalk = require("chalk");
 
 module.exports = class Util {
-  static logSocketIORequest(type, message) {
-    if (process.env.ENV === "test") return;
+  static log(clazz, msg) {
+    if(!clazz) clazz = {constructor: {name: "Talk"}};
     console.log(
-      chalk.magenta("[API-DEV]") +
+      chalk.blue("[" + clazz.constructor.name + "]") + " " + msg
+    );
+  }
+
+  static logHandshakes(handshake) {
+
+    // TODO need to implement a prettier way to log this stuff
+
+    // console.log(handshake);
+  }
+
+  static logSocketIORequest(type, message, socket) {
+    console.log(
+      chalk.magenta("[TALK]") +
       " " +
       type +
       " -> " +
-      message
+      message +
+      " :: " +
+      !socket ? "" : socket.id
     );
   }
 
   static logPostRequest(type, url, dtoReq, dtoRes) {
-    if (process.env.ENV === "test") return;
     console.log(
-      chalk.magenta("[API-DEV]") +
+      chalk.magenta("[TALK]") +
       " " +
       type +
       " -> " +
@@ -27,10 +41,23 @@ module.exports = class Util {
     );
   }
 
-  static logError(e, type, url) {
-    if (process.env.ENV === "test") return;
+  static logWarnRequest(msg, type, url) {
     console.log(
       chalk.magenta("[API-DEV]") +
+      " " +
+      chalk.bold.yellow("[WARN]") +
+      " " +
+      type +
+      " -> " +
+      url +
+      " :: " +
+      msg
+    );
+  }
+
+  static logError(e, type, url) {
+    console.log(
+      chalk.magenta("[TALK]") +
       " " +
       chalk.bold.red("[ERROR]") +
       " " +
