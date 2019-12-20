@@ -10,7 +10,7 @@ Next, install all the node modules with yarn.
 
 `yarn install`
 
-To run the app, we use the heroku client that runs the Procfile
+To run the express, we use the heroku client that runs the Procfile
 
 `heroku local web`
 

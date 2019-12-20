@@ -3,7 +3,7 @@ const chalk = require("chalk");
 module.exports = class Util {
 
   /**
-   * generalized logging for the app server
+   * generalized logging for the express server
    * @param clazz
    * @param msg
    */

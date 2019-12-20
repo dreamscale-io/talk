@@ -3,7 +3,7 @@ const chalk = require("chalk"),
   server = require('http').Server(express),
   bodyParser = require("body-parser"),
   socketIO = require("socket.io"),
-  SocketEmit = require("./server/resources/SocketResource"),
+  SocketEmit = require("./server/resources/SocketEmit"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -20,18 +20,19 @@ const chalk = require("chalk"),
 module.exports = (
 
   /**
-   * the root class of he talk service which rides on top of the node express server
+   * the root class of he server service which rides on top of the node express server
    */
   class Talk {
 
     /**
-     * builds the talk server and initializes it
+     * builds the server server and initializes it
      */
     constructor() {
-      this.app = express;
-      this.talk = server;
+      this.express = express;
+      this.server = server;
       this.io = io;
       this.connections = new Map();
+      this.resources = new Map();
       this.port = process.env.PORT || 5050;
       express.use(bodyParser.json());
       express.use(bodyParser.urlencoded({extended: true}));
@@ -44,9 +45,9 @@ module.exports = (
     static setup() {
       Util.log(null, "Starting Server...")
       let talk = new Talk();
+      global.talk = talk;
       talk.wireReourcesToApi();
       talk.configureSockets();
-      global.talk = talk;
       return talk;
     }
 
@@ -57,7 +58,7 @@ module.exports = (
      */
     wireReourcesToApi() {
       Util.log(this, "Wiring resources together")
-      express.post("/socket/emit", new SocketEmit(this));
+      this.resources.set(SocketEmit.SRI, new SocketEmit());
       return this;
     }
 
@@ -92,7 +93,7 @@ module.exports = (
     }
 
     /**
-     * starts the talk server within a static instance of this file
+     * starts the server server within a static instance of this file
      * @returns {Talk}
      */
     begin() {

@@ -11,28 +11,22 @@ const Util = require("../../Util"),
 module.exports = class SocketEmit extends BaseResource {
   constructor() {
     super();
-    return (req, res) => this.resource(req, res)
+    BaseResource.init(SocketEmit.SRI, (..._) => SocketEmit.resource(..._));
   }
 
-  resource(req, res) {
-    try {
-      // console.log(this.validateHeaders());
-      let talkKey = req.headers["x-talk-key"];
+  static get SRI() {
+    return "/socket/emit";
+  }
 
-      /// check to see if we are passing the correct header information
-      if (!talkKey) {
-        let dtoRes = new SimpleStatusDto({
-          status: "INVALID",
-          message: "unable to perform request with given header information.",
-        });
-        res.send(dtoRes);
-        Util.logWarnRequest(JSON.stringify(dtoRes), "POST", req.url);
-        return;
-      }
+  static resource(req, res) {
+    try {
+
+
+      let key = BaseResource.validate(req, res);
 
       /// extract the POST data into DTO request object
       let dtoReq = new ChannelEmitDto(req.body);
-      let socket = Util.getConnectedSocket(talkKey);
+      let socket = Util.getConnectedSocket(key);
       Util.logSocketIORequest(dtoReq.eventName, dtoReq.args, socket);
 
       /// check if we have any sockets connected
