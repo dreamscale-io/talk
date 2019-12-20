@@ -1,10 +1,9 @@
-const GLOBAL_ = global,
-  chalk = require("chalk"),
+const chalk = require("chalk"),
   express = require("express")(),
   server = require('http').Server(express),
   bodyParser = require("body-parser"),
   socketIO = require("socket.io"),
-  SocketEmit = require("./public/server/resources/SocketEmit"),
+  SocketEmit = require("./server/resources/SocketResource"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -19,6 +18,10 @@ const GLOBAL_ = global,
  * export the Talk class as a module for node
  */
 module.exports = (
+
+  /**
+   * the root class of he talk service which rides on top of the node express server
+   */
   class Talk {
 
     /**
@@ -43,32 +46,35 @@ module.exports = (
       let talk = new Talk();
       talk.wireReourcesToApi();
       talk.configureSockets();
+      global.talk = talk;
       return talk;
     }
 
     /**
      * set ups the API endpoints with corresponding resource classes
+     * see -> https://socket.io/docs/emit-cheatsheet/
      * @returns {Talk}
      */
     wireReourcesToApi() {
       Util.log(this, "Wiring resources together")
-      /// restful API sewe -> https://socket.io/docs/emit-cheatsheet/
       express.post("/socket/emit", new SocketEmit(this));
       return this;
     }
 
     /**
-     *
+     * sets up all of the sockets so we can notify their listeners for fluffy and stuffy
      * @returns {Talk}
      */
     configureSockets() {
       Util.log(this, "Configuring io sockets");
-      this.io.on("connection", (socket) => {
+
+      this.io.on("connection", (socket) =>
+      {
         Util.logHandshakes(this, socket.handshake);
-        Util.log(this, "Storing connectionId : " + socket.handshake.query.connectionId + " -> " + socket.id);
+        Util.log(this, "Storing connection key :: " + socket.handshake.query.key + " -> " + socket.id);
 
         // reference connection id to socket id.
-        this.connections.set(socket.handshake.query.connectionId, socket.id);
+        Util.setConnectedSocket(socket.handshake.query.key, socket.id);
 
         // GLOBAL - all channels are notified here
         socket.on('error', (error) => {
@@ -85,6 +91,10 @@ module.exports = (
       return this;
     }
 
+    /**
+     * starts the talk server within a static instance of this file
+     * @returns {Talk}
+     */
     begin() {
       server.listen(this.port, () => {
         Util.log(this, `Started on ${this.port}`)
@@ -93,4 +103,4 @@ module.exports = (
     }
   })
 .setup()
-.begin()
+.begin();

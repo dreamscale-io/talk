@@ -2,7 +2,7 @@
   "name": "talk",
   "version": "0.0.2",
   "description": "Talk Service Server",
-  "main": "TalkServer.js",
+  "main": "public/Talk.js",
   "repository": "https://github.com/dreamscale-io/talk.git",
   "author": "ZoeDreams <zoe@dreamscale.io>",
   "license": "MIT",
