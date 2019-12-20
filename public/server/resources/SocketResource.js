@@ -32,7 +32,7 @@ module.exports = class SocketEmit extends BaseResource {
 
       /// extract the POST data into DTO request object
       let dtoReq = new ChannelEmitDto(req.body);
-      let socket = Util.getConnectedSocket(talkKey);
+      let socket = Utilx.getConnectedSocket(talkKey);
       Util.logSocketIORequest(dtoReq.eventName, dtoReq.args, socket);
 
       /// check if we have any sockets connected
