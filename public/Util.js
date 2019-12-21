@@ -2,10 +2,6 @@ const chalk = require("chalk");
 
 module.exports = class Util {
 
-  static get namespace() {
-    return "/io/"
-  }
-
   /**
    * generalized logging for the express server
    * @param clazz

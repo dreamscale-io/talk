@@ -20,7 +20,7 @@ module.exports = class SocketEmit extends BaseResource {
    * @constructor
    */
   static get SRI() {
-    return Util.namespace + "socket/emit";
+    return "/socket/emit";
   }
 
   /**
