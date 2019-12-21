@@ -110,10 +110,14 @@ module.exports = class Util {
   }
 
   /**
-   * gets the io server that is running globally inside express
-   * @returns {SocketIO.Server}
+   * handles any errors that the resource might throw
+   * @param err
+   * @param req
+   * @param res
    */
-  static getIO() {
-    return global.talk.io;
+  static handleErr(err, req, res) {
+    Util.logError(err, "POST", req ? req.url : "");
+    res.statusCode = 400;
+    res.send(err.message);
   }
 };

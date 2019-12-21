@@ -31,11 +31,11 @@ module.exports = class SocketEmit extends BaseResource {
   static resource(req, res) {
     try {
       let keys = BaseResource.validateKeys(req, res);
-      let socketDto = new SocketDto(req.body);
-      BaseResource.emitToSocket(keys, req, res, socketDto);
+      let dto = new SocketDto(req.body);
+      BaseResource.emitToSocket(keys, req, res, dto);
     }
     catch (err) {
-      BaseResource.handleErr(err, req, res);
+      Util.handleErr(err, req, res);
     }
   }
 }

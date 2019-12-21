@@ -3,18 +3,14 @@ const Util = require("../../Util"),
   BaseResource = require("./BaseResource");
 
 /**
- * basic server API resource endpoint that is used to emit events to rooms
+ * basic server API resource endpoint that is used to emit events onto rooms
  * the wire.
- * @type {IoTo}
+ * @type {SocketTo}
  */
-module.exports = class IoTo extends BaseResource {
-
-  /**
-   * dependency class injector
-   */
+module.exports = class SocketTo extends BaseResource {
   constructor() {
     super();
-    BaseResource.init(IoTo.SRI, (..._) => IoTo.resource(..._));
+    BaseResource.init(SocketTo.SRI, (..._) => SocketTo.resource(..._));
   }
 
   /**
@@ -23,7 +19,7 @@ module.exports = class IoTo extends BaseResource {
    * @constructor
    */
   static get SRI() {
-    return "/io/to";
+    return "/socket/to";
   }
 
   /**
@@ -36,7 +32,7 @@ module.exports = class IoTo extends BaseResource {
     try {
       let keys = BaseResource.validateKeys(req, res);
       let dto = new SocketDto(req.body);
-      BaseResource.emitToRoom(keys, req, res, dto);
+      BaseResource.emitToRoomFromSocket(keys, req, res, dto);
     }
     catch (err) {
       Util.handleErr(err, req, res);

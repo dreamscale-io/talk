@@ -44,18 +44,6 @@ module.exports = class BaseResource {
   }
 
   /**
-   * handles any errors that the resource might throw
-   * @param err
-   * @param req
-   * @param res
-   */
-  static handleErr(err, req, res) {
-    Util.logError(err, "POST", req ? req.url : "");
-    res.statusCode = 400;
-    res.send(err.message);
-  }
-
-  /**
    * called when we try to emit and event to a socket that doesn't exist on
    * the server
    * @param socket
@@ -90,6 +78,13 @@ module.exports = class BaseResource {
     return;
   }
 
+  static checkKeys(keys, req, res, reqDto) {
+    if (!keys) {
+      BaseResource.handleUnknownKeys(keys, req, res, reqDto);
+      return;
+    }
+  }
+
   /**
    * emit an event to a specific socket
    * @param keys - the skey pair of to/from id
@@ -98,16 +93,13 @@ module.exports = class BaseResource {
    * @param reqDto - the request data that was posted
    */
   static emitToSocket(keys, req, res, reqDto) {
-    if (!keys) {
-      BaseResource.handleUnknownKeys(..._);
-      return;
-    }
+    this.checkKeys(keys, req, res, reqDto);
     let socket = Util.getConnectedSocket(keys.to);
     if (!socket) {
       BaseResource.handleUnknownSocket(..._);
       return;
     }
-    socket.emit(reqDto.eventName, reqDto.args, (data) => {
+    socket.emit(reqDto.name, reqDto.arg, (data) => {
       let resDto = new SimpleStatusDto({
         status: "SENT",
         message: "event emitted to socket",
@@ -118,11 +110,24 @@ module.exports = class BaseResource {
   }
 
   static emitToRoom(keys, req, res, reqDto) {
-    if (!keys) {
-      BaseResource.handleUnknownKeys(..._);
+    this.checkKeys(keys, req, res, reqDto);
+    global.talk.io.to(keys.to).emit(reqDto.name, reqDto.arg);
+    let resDto = new SimpleStatusDto({
+      status: "SENT",
+      message: "event emitted to room",
+    });
+    Util.logPostRequest("POST", req.url, reqDto, resDto);
+    res.send(resDto);
+  }
+
+  static emitToRoomFromSocket(keys, req, res, reqDto) {
+    this.checkKeys(keys, req, res, reqDto);
+    let socket = Util.getConnectedSocket(keys.from);
+    if (!socket) {
+      BaseResource.handleUnknownSocket(..._);
       return;
     }
-    global.talk.io.to(keys.to).emit(reqDto.eventName, reqDto.args);
+    socket.to(keys.to).emit(reqDto.name, reqDto.arg);
     let resDto = new SimpleStatusDto({
       status: "SENT",
       message: "event emitted to room",

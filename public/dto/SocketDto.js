@@ -1,16 +1,16 @@
 //
 // model class for ActivationToken
 //
-module.exports = class ChannelEmitDto {
+module.exports = class SocketDto {
   constructor(json) {
     try {
       if (typeof json === "string") json = JSON.parse(json);
-      this.eventName = json.eventName;
-      this.args = json.args;
+      this.name = json.name;
+      this.arg = json.arg;
     }
     catch (e) {
       throw new Error(
-        "Unable to create dto 'ChannelEmitDto' : " + e.message
+        "Unable to create 'SocketDto' : " + e.message
       );
     }
   }
