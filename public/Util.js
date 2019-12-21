@@ -100,7 +100,20 @@ module.exports = class Util {
     return global.talk.io.sockets.connected[global.talk.connections.get(talkKey)]
   }
 
+  /**
+   * saves the socket into identification map
+   * @param talkKey
+   * @param socketId
+   */
   static setConnectedSocket(talkKey, socketId) {
     global.talk.connections.set(talkKey, socketId);
+  }
+
+  /**
+   * gets the io server that is running globally inside express
+   * @returns {SocketIO.Server}
+   */
+  static getIO() {
+    return global.talk.io;
   }
 };

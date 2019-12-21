@@ -4,6 +4,7 @@ const chalk = require("chalk"),
   bodyParser = require("body-parser"),
   socketIO = require("socket.io"),
   SocketEmit = require("./server/resources/SocketEmit"),
+  SocketTo = require("./server/resources/IoTo"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -59,6 +60,7 @@ module.exports = (
     wireReourcesToApi() {
       Util.log(this, "Wiring resources together")
       this.resources.set(SocketEmit.SRI, new SocketEmit());
+      this.resources.set(SocketTo.SRI, new SocketTo());
       return this;
     }
 

@@ -27,10 +27,11 @@ module.exports = class BaseResource {
    * @param request
    * @param response
    */
-  static validate(request, response) {
-    let key = request.headers["x-talk-key"];
+  static validateKeys(request, response) {
+    let keyTo = request.headers["x-talk-key-to"],
+      keyFrom = request.headers["x-talk-key-from"];
 
-    if (!key) {
+    if (!keyTo || !keyFrom) {
       let dto = new SimpleStatusDto({
         status: "INVALID",
         message: "unable to perform request with given header information.",
@@ -39,7 +40,7 @@ module.exports = class BaseResource {
       Util.logWarnRequest(JSON.stringify(dto), "POST", request.url);
       return null;
     }
-    return key;
+    return {to: keyTo, from: keyFrom};
   }
 
   /**
@@ -73,13 +74,35 @@ module.exports = class BaseResource {
   }
 
   /**
+   * called when we do not have proper pair of keys
+   * @param keys
+   * @param req
+   * @param res
+   * @param reqDto
+   */
+  static handleUnknownKeys(keys, req, res, reqDto) {
+    let resDto = new SimpleStatusDto({
+      status: "UNKNOWN",
+      message: "unknown or invalid header key pair",
+    });
+    Util.logPostRequest("POST", req.url, reqDto, resDto);
+    res.send(resDto);
+    return;
+  }
+
+  /**
    * emit an event to a specific socket
-   * @param socket - the socket to send the event to
+   * @param keys - the skey pair of to/from id
    * @param req - the request that was made
    * @param res - the response sent to the calling function
    * @param reqDto - the request data that was posted
    */
-  static emitToSocket(socket, req, res, reqDto) {
+  static emitToSocket(keys, req, res, reqDto) {
+    if (!keys) {
+      BaseResource.handleUnknownKeys(..._);
+      return;
+    }
+    let socket = Util.getConnectedSocket(keys.to);
     if (!socket) {
       BaseResource.handleUnknownSocket(..._);
       return;
@@ -87,10 +110,24 @@ module.exports = class BaseResource {
     socket.emit(reqDto.eventName, reqDto.args, (data) => {
       let resDto = new SimpleStatusDto({
         status: "SENT",
-        message: "message sent to feed",
+        message: "event emitted to socket",
       });
       Util.logPostRequest("POST", req.url, reqDto, resDto);
       res.send(resDto);
     });
+  }
+
+  static emitToRoom(keys, req, res, reqDto) {
+    if (!keys) {
+      BaseResource.handleUnknownKeys(..._);
+      return;
+    }
+    global.talk.io.to(keys.to).emit(reqDto.eventName, reqDto.args);
+    let resDto = new SimpleStatusDto({
+      status: "SENT",
+      message: "event emitted to room",
+    });
+    Util.logPostRequest("POST", req.url, reqDto, resDto);
+    res.send(resDto);
   }
 }

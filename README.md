@@ -24,3 +24,8 @@ To run the express, we use the heroku client that runs the Procfile
 - Create API for creating new rooms
 - Create API for destroying rooms
 - Create API for sending message to room
+
+
+##NOTES:
+- all requests are POST, and require two header properties called 'x-talk-key-to' & 'x-talk-key-from'. These properties represent the transient connection ids of the sender and reciever.
+ 
