@@ -2,6 +2,10 @@ const chalk = require("chalk");
 
 module.exports = class Util {
 
+  static get namespace() {
+    return "/io/"
+  }
+
   /**
    * generalized logging for the express server
    * @param clazz
@@ -27,7 +31,7 @@ module.exports = class Util {
 
   static logSocketIORequest(type, message, socket) {
     console.log(
-      chalk.magenta("[TALK]") +
+      chalk.magenta("[talk]") +
       " " +
       type +
       " -> " +
