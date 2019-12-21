@@ -1,7 +1,7 @@
 {
   "name": "talk",
-  "version": "0.0.2",
-  "description": "Talk Service Server",
+  "version": "0.0.3",
+  "description": "Talk Server",
   "main": "public/Talk.js",
   "repository": "https://github.com/dreamscale-io/talk.git",
   "author": "ZoeDreams <zoe@dreamscale.io>",
