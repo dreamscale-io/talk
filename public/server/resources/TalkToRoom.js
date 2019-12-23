@@ -10,14 +10,13 @@ module.exports = class TalkToRoom extends BaseResource {
   }
 
   static get SRI() {
-    return "/io/to";
+    return "/talk/to/room/:roomId";
   }
 
   static resource(req, res) {
     try {
-      let keys = BaseResource.validateKeys(req, res);
       let dto = new TalkMessageDto(req.body);
-      BaseResource.emitToRoom(keys, req, res, dto);
+      BaseResource.sendRoomMessage(req, res, dto);
     }
     catch (err) {
       Util.handleErr(err, req, res);

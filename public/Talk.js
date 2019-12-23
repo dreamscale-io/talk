@@ -32,12 +32,12 @@ module.exports = (class Talk {
     Util.log(null, "Starting Server...")
     let talk = new Talk();
     global.talk = talk;
-    talk.wireReourcesToApi();
+    talk.wireResourcesTo();
     talk.configureSockets();
     return talk;
   }
 
-  wireReourcesToApi() {
+  wireResourcesTo() {
     Util.log(this, "Wiring resources together")
     this.resources.set(TalkToClient.SRI, new TalkToClient());
     this.resources.set(TalkToRoom.SRI, new TalkToRoom());
