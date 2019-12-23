@@ -1,6 +1,3 @@
-//
-// dto class for SimpleStatus
-//
 module.exports = class SimpleStatusDto {
   constructor(json) {
     try {

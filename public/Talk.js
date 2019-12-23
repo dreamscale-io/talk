@@ -3,9 +3,8 @@ const chalk = require("chalk"),
   server = require('http').Server(express),
   bodyParser = require("body-parser"),
   socketIO = require("socket.io"),
-  SocketEmit = require("./server/resources/SocketEmit"),
-  SocketTo = require("./server/resources/SocketTo"),
-  IoTo = require("./server/resources/IoTo"),
+  TalkToClient = require("./server/resources/TalkToClient"),
+  TalkToRoom = require("./server/resources/TalkToRoom"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -16,14 +15,8 @@ const chalk = require("chalk"),
     cookie: false
   });
 
-/**
- * export the Talk class as a module for node
- */
 module.exports = (class Talk {
 
-  /**
-   * builds the server server and initializes it
-   */
   constructor() {
     this.express = express;
     this.server = server;
@@ -35,10 +28,6 @@ module.exports = (class Talk {
     express.use(bodyParser.urlencoded({extended: true}));
   }
 
-  /**
-   * called to create the Talk Server from class Talk
-   * @returns {Talk}
-   */
   static setup() {
     Util.log(null, "Starting Server...")
     let talk = new Talk();
@@ -48,23 +37,13 @@ module.exports = (class Talk {
     return talk;
   }
 
-  /**
-   * set ups the API endpoints with corresponding resource classes
-   * see -> https://socket.io/docs/emit-cheatsheet/
-   * @returns {Talk}
-   */
   wireReourcesToApi() {
     Util.log(this, "Wiring resources together")
-    this.resources.set(SocketEmit.SRI, new SocketEmit());
-    this.resources.set(SocketTo.SRI, new SocketTo());
-    this.resources.set(IoTo.SRI, new IoTo());
+    this.resources.set(TalkToClient.SRI, new TalkToClient());
+    this.resources.set(TalkToRoom.SRI, new TalkToRoom());
     return this;
   }
 
-  /**
-   * sets up all of the sockets so we can notify their listeners for fluffy and stuffy
-   * @returns {Talk}
-   */
   configureSockets() {
     Util.log(this, "Configuring io sockets");
 
@@ -96,10 +75,6 @@ module.exports = (class Talk {
     return this;
   }
 
-  /**
-   * starts the server server within a static instance of this file
-   * @returns {Talk}
-   */
   begin() {
     server.listen(this.port, () => {
       Util.log(this, `Started on ${this.port}`)

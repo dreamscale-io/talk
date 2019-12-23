@@ -1,32 +1,15 @@
 const SimpleStatusDto = require("../../dto/SimpleStatusDto"),
   Util = require("../../Util");
 
-/**
- * base class that all resources implement
- * @type {BaseResource}
- */
 module.exports = class BaseResource {
 
-  /**
-   * builds the base object for the resource
-   */
   constructor() {
   }
 
-  /**
-   * initializes the BaseResource class for this resource
-   * @param sri
-   * @param clazz
-   */
   static init(sri, clazz) {
     global.talk.express.post(sri, clazz);
   }
 
-  /**
-   * validates the header information of the request with the request and response
-   * @param request
-   * @param response
-   */
   static validateKeys(request, response) {
     let keyTo = request.headers["x-talk-key-to"],
       keyFrom = request.headers["x-talk-key-from"];
@@ -43,14 +26,6 @@ module.exports = class BaseResource {
     return {to: keyTo, from: keyFrom};
   }
 
-  /**
-   * called when we try to emit and event to a socket that doesn't exist on
-   * the server
-   * @param socket
-   * @param req
-   * @param res
-   * @param reqDto
-   */
   static handleUnknownSocket(socket, req, res, reqDto) {
     let resDto = new SimpleStatusDto({
       status: "UNKNOWN",
@@ -61,13 +36,6 @@ module.exports = class BaseResource {
     return;
   }
 
-  /**
-   * called when we do not have proper pair of keys
-   * @param keys
-   * @param req
-   * @param res
-   * @param reqDto
-   */
   static handleUnknownKeys(keys, req, res, reqDto) {
     let resDto = new SimpleStatusDto({
       status: "UNKNOWN",
@@ -85,13 +53,6 @@ module.exports = class BaseResource {
     }
   }
 
-  /**
-   * emit an event to a specific socket
-   * @param keys - the skey pair of to/from id
-   * @param req - the request that was made
-   * @param res - the response sent to the calling function
-   * @param reqDto - the request data that was posted
-   */
   static emitToSocket(keys, req, res, reqDto) {
     this.checkKeys(keys, req, res, reqDto);
     let socket = Util.getConnectedSocket(keys.to);
