@@ -3,8 +3,8 @@ const chalk = require("chalk"),
   server = require('http').Server(express),
   bodyParser = require("body-parser"),
   socketIO = require("socket.io"),
-  TalkToClient = require("./server/resources/TalkToClient"),
-  TalkToRoom = require("./server/resources/TalkToRoom"),
+  TalkToClient = require("./resources/TalkToClient"),
+  TalkToRoom = require("./resources/TalkToRoom"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -15,7 +15,7 @@ const chalk = require("chalk"),
     cookie: false
   });
 
-module.exports = (class Talk {
+class Talk {
 
   constructor() {
     this.express = express;
@@ -28,13 +28,11 @@ module.exports = (class Talk {
     express.use(bodyParser.urlencoded({extended: true}));
   }
 
-  static setup() {
+  setup() {
     Util.log(null, "Starting Server...")
-    let talk = new Talk();
-    global.talk = talk;
-    talk.wireResourcesTo();
-    talk.configureSockets();
-    return talk;
+    this.wireResourcesTo();
+    this.configureSockets();
+    return this;
   }
 
   wireResourcesTo() {
@@ -48,20 +46,19 @@ module.exports = (class Talk {
     Util.log(this, "Configuring io sockets");
 
     this.io.on("connection", (socket) => {
-      Util.logHandshakes(this, socket.handshake);
-      Util.log(this, "Storing connection key :: " + socket.handshake.query.key + " -> " + socket.id);
-
-      Util.setConnectedSocket(socket.handshake.query.key, socket.id);
+      let clientId = Util.getClientIdFromSocket(socket);
+      Util.setConnectedSocket(clientId, socket.id);
+      Util.log(this, "Storing connection key -> " + clientId + " : " + socket.id);
 
       /// notified across all sockets in network
       socket.on('error', (error) => {
-        console.log("Client error : " + socket.id + " -> " + error);
+        Util.log(this, "Client error : " + socket.id + " -> " + error);
       });
       socket.on('disconnecting', (reason) => {
-        console.log("Client disconnecting : " + socket.id + " -> " + reason);
+        Util.log(this, "Client disconnecting : " + socket.id + " -> " + reason);
       });
       socket.on("disconnect", (reason) => {
-        console.log("Client disconnected : " + socket.id + " -> " + reason);
+        Util.log(this, "Client disconnected : " + socket.id + " -> " + reason);
       });
 
       /// testing - auto-join a default wtf test room
@@ -81,6 +78,6 @@ module.exports = (class Talk {
     });
     return this;
   }
-})
-.setup()
-.begin();
+}
+
+module.exports = Talk;

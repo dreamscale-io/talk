@@ -2,13 +2,13 @@
   "name": "talk",
   "version": "0.0.4",
   "description": "Talk Server",
-  "main": "public/Talk.js",
+  "main": "public/server/Talk.js",
   "repository": "https://github.com/dreamscale-io/talk.git",
   "author": "ZoeDreams <zoe@dreamscale.io>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "docs": "jsdoc public/Talk.js --configure .jsdoc.json --verbose"
+    "docs": "jsdoc public/* --configure .jsdoc.json --verbose"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

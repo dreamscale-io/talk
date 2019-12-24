@@ -1,5 +1,6 @@
-const SimpleStatusDto = require("../../dto/SimpleStatusDto"),
-  Util = require("../../Util");
+const SimpleStatusDto = require("../dto/SimpleStatusDto"),
+  TalkMessageDto = require("../dto/TalkMessageDto"),
+  Util = require("../Util");
 
 module.exports = class BaseResource {
 
@@ -20,13 +21,14 @@ module.exports = class BaseResource {
     return;
   }
 
-  static sendDirectMessage(req, res, dto) {
-    let socket = Util.getConnectedSocket(keys.to);
+  static sendDirectMessage(req, res) {
+    let dto = new TalkMessageDto(req.body);
+    let socket = Util.getConnectedSocketFrom(dto.toId);
     if (!socket) {
-      BaseResource.handleUnknownSocket(..._);
+      BaseResource.handleUnknownSocket(req, res);
       return;
     }
-    socket.emit(dto.name, dto.arg, (data) => {
+    socket.emit(BaseResource.EventTypes.MESSAGE_CLIENT, dto.jsonBody, (data) => {
       let resDto = new SimpleStatusDto({
         status: "SENT",
         message: "direct message was sent",
@@ -36,13 +38,21 @@ module.exports = class BaseResource {
     });
   }
 
-  static sendRoomMessage(req, res, dto) {
-    global.talk.io.to(keys.to).emit(dto.name, dto.arg);
+  static sendRoomMessage(req, res) {
+    let dto = new TalkMessageDto(req.body);
+    global.talk.io.to(dto.toId).emit(BaseResource.EventTypes.MESSAGE_ROOM, dto.jsonBody);
     let resDto = new SimpleStatusDto({
       status: "SENT",
       message: "message was sent to the room",
     });
     Util.logPostRequest("POST", req.url, dto, resDto);
     res.send(resDto);
+  }
+
+  static get EventTypes() {
+    return {
+      MESSAGE_ROOM: "message-room",
+      MESSAGE_CLIENT: "message-client"
+    }
   }
 }

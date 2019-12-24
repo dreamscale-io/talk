@@ -1,5 +1,4 @@
-const Util = require("../../Util"),
-  TalkMessageDto = require("../../dto/TalkMessageDto"),
+const Util = require("../Util"),
   BaseResource = require("./BaseResource");
 
 module.exports = class TalkToClient extends BaseResource {
@@ -15,8 +14,7 @@ module.exports = class TalkToClient extends BaseResource {
 
   static resource(req, res) {
     try {
-      let dto = new TalkMessageDto(req.body);
-      BaseResource.sendDirectMessage(req, res, dto);
+      BaseResource.sendDirectMessage(req, res);
     }
     catch (err) {
       Util.handleErr(err, req, res);
