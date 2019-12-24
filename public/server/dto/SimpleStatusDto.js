@@ -1,4 +1,8 @@
-module.exports = class SimpleStatusDto {
+/**
+ * defines our basic status reporting object used by gridtime
+ */
+class SimpleStatusDto {
+
   constructor(json) {
     try {
       if (typeof json === "string") json = JSON.parse(json);
@@ -19,3 +23,5 @@ module.exports = class SimpleStatusDto {
     return false;
   }
 };
+
+module.exports = SimpleStatusDto;

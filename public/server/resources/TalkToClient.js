@@ -1,7 +1,10 @@
 const Util = require("../Util"),
   BaseResource = require("./BaseResource");
 
-module.exports = class TalkToClient extends BaseResource {
+/**
+ * Talk Resource class used to handle sending a direct message to a specific client connection
+ */
+class TalkToClient extends BaseResource {
 
   constructor() {
     super();
@@ -22,3 +25,4 @@ module.exports = class TalkToClient extends BaseResource {
   }
 }
 
+module.exports = TalkToClient

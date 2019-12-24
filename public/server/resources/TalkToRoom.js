@@ -1,7 +1,10 @@
 const Util = require("../Util"),
   BaseResource = require("./BaseResource");
 
-module.exports = class TalkToRoom extends BaseResource {
+/**
+ * Talk Resource class used for sending (broadcast) a message to an entire room
+ */
+class TalkToRoom extends BaseResource {
 
   constructor() {
     super();
@@ -22,3 +25,4 @@ module.exports = class TalkToRoom extends BaseResource {
   }
 }
 
+module.exports = TalkToRoom;

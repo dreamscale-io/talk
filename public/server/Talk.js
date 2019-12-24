@@ -1,8 +1,6 @@
-const chalk = require("chalk"),
-  express = require("express")(),
+const express = require("express")(),
   server = require('http').Server(express),
   bodyParser = require("body-parser"),
-  socketIO = require("socket.io"),
   TalkToClient = require("./resources/TalkToClient"),
   TalkToRoom = require("./resources/TalkToRoom"),
   Util = require("./Util"),
@@ -15,6 +13,9 @@ const chalk = require("chalk"),
     cookie: false
   });
 
+/**
+ * The core class that defines who and what the Talk server is
+ */
 class Talk {
 
   constructor() {

@@ -1,6 +1,9 @@
 const chalk = require("chalk");
 
-module.exports = class Util {
+/**
+ * Base Utility helper class for Talk, Server, and Friends!
+ */
+class Util {
 
   static log(clazz, msg) {
     if (!clazz) clazz = {constructor: {name: "Talk"}};
@@ -94,3 +97,5 @@ module.exports = class Util {
     return socket.handshake.query.clientId;
   }
 };
+
+module.exports = Util;

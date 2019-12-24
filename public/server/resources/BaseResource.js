@@ -2,7 +2,12 @@ const SimpleStatusDto = require("../dto/SimpleStatusDto"),
   TalkMessageDto = require("../dto/TalkMessageDto"),
   Util = require("../Util");
 
-module.exports = class BaseResource {
+/**
+ * the lowest of the low, grittiest of gritty, herrrreees BaseResource. This class can send
+ * recieve, slice and dice its way into any and all little htto post request that come into
+ * node. PS. implemented by all other resources
+ */
+class BaseResource {
 
   constructor() {
   }
@@ -56,3 +61,5 @@ module.exports = class BaseResource {
     }
   }
 }
+
+module.exports = BaseResource;

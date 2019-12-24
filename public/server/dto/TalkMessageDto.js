@@ -1,6 +1,10 @@
 const Util = require("../Util");
 
-module.exports = class TalkMessageDto {
+/**
+ * Object that is recieved by the REST interface for talk
+ */
+class TalkMessageDto {
+
   constructor(request) {
     try {
       if (typeof request === "string") request = JSON.parse(request);
@@ -19,4 +23,6 @@ module.exports = class TalkMessageDto {
       throw new Error("Unable to create json : " + e.message);
     }
   }
-};
+}
+
+module.exports = TalkMessageDto;
