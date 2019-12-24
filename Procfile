@@ -1,1 +1,1 @@
-web: node public/server/Talk.js
+web: node index.js
