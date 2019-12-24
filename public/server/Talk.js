@@ -47,9 +47,16 @@ class Talk {
     Util.log(this, "Configuring io sockets");
 
     this.io.on("connection", (socket) => {
-      let clientId = Util.getClientIdFromSocket(socket);
-      Util.setConnectedSocket(clientId, socket.id);
-      Util.log(this, "Storing connection key -> " + clientId + " : " + socket.id);
+      let connectionId = Util.getConnectionIdFromSocket(socket);
+
+
+      // TODO implement Util.reportConnection(connectionId);
+
+      // TODO make this comnditional for when we get a bad report back
+
+      Util.setConnectedSocket(connectionId, socket.id);
+
+      Util.log(this, "Storing connection key -> " + connectionId + " : " + socket.id);
 
       /// notified across all sockets in network
       socket.on('error', (error) => {

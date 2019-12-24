@@ -134,7 +134,7 @@ class Util {
     res.send(err.message);
   }
 
-  static getClientIdFromSocket(socket) {
+  static getConnectionIdFromSocket(socket) {
     return socket.handshake.query.clientId;
   }
 };

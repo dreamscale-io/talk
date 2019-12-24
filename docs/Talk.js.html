@@ -88,7 +88,7 @@ class Talk {
     Util.log(this, "Configuring io sockets");
 
     this.io.on("connection", (socket) => {
-      let clientId = Util.getClientIdFromSocket(socket);
+      let clientId = Util.getConnectionIdFromSocket(socket);
       Util.setConnectedSocket(clientId, socket.id);
       Util.log(this, "Storing connection key -> " + clientId + " : " + socket.id);
 

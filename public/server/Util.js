@@ -79,12 +79,16 @@ class Util {
     }
   }
 
-  static getConnectedSocketFrom(clientId) {
-    return global.talk.io.sockets.connected[global.talk.connections.get(clientId)]
+  static getConnectedSocketFrom(connectionId, req, res) {
+    let socket = global.talk.io.sockets.connected[global.talk.connections.get(connectionId)];
+    if (!socket) {
+      BaseResource.handleUnknownSocket(req, res, req.body);
+    }
+    return socket;
   }
 
-  static setConnectedSocket(clientId, socketId) {
-    global.talk.connections.set(clientId, socketId);
+  static setConnectedSocket(connectionId, socketId) {
+    global.talk.connections.set(connectionId, socketId);
   }
 
   static handleErr(err, req, res) {
@@ -93,8 +97,8 @@ class Util {
     res.send(err.message);
   }
 
-  static getClientIdFromSocket(socket) {
-    return socket.handshake.query.clientId;
+  static getConnectionIdFromSocket(socket) {
+    return socket.handshake.query.connectionId;
   }
 };
 

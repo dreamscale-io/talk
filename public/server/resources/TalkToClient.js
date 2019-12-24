@@ -12,7 +12,7 @@ class TalkToClient extends BaseResource {
   }
 
   static get SRI() {
-    return "/talk/to/client/:clientId";
+    return "/talk/to/client/:connectionId";
   }
 
   static resource(req, res) {
