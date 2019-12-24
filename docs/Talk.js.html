@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Talk.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BaseResource.html">BaseResource</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Server.html">Server</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="SimpleStatusDto.html">SimpleStatusDto</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Talk.html">Talk</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TalkMessageDto.html">TalkMessageDto</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TalkToClient.html">TalkToClient</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TalkToRoom.html">TalkToRoom</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Util.html">Util</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Talk.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const express = require("express")(),
+  server = require('http').Server(express),
+  bodyParser = require("body-parser"),
+  TalkToClient = require("./resources/TalkToClient"),
+  TalkToRoom = require("./resources/TalkToRoom"),
+  Util = require("./Util"),
+  io = require('socket.io')(server, {
+    serveClient: false,
+    allowUpgrades: true,
+    pingInterval: 20000,
+    pingTimeout: 20000,
+    transports: ["polling", "websocket"],
+    cookie: false
+  });
+
+/**
+ * The core class that defines who and what the Talk server is
+ */
+class Talk {
+
+  constructor() {
+    this.express = express;
+    this.server = server;
+    this.io = io;
+    this.connections = new Map();
+    this.resources = new Map();
+    this.port = process.env.PORT || 5050;
+    express.use(bodyParser.json());
+    express.use(bodyParser.urlencoded({extended: true}));
+  }
+
+  setup() {
+    Util.log(null, "Starting Server...")
+    this.wireResourcesTo();
+    this.configureSockets();
+    return this;
+  }
+
+  wireResourcesTo() {
+    Util.log(this, "Wiring resources together")
+    this.resources.set(TalkToClient.SRI, new TalkToClient());
+    this.resources.set(TalkToRoom.SRI, new TalkToRoom());
+    return this;
+  }
+
+  configureSockets() {
+    Util.log(this, "Configuring io sockets");
+
+    this.io.on("connection", (socket) => {
+      let clientId = Util.getClientIdFromSocket(socket);
+      Util.setConnectedSocket(clientId, socket.id);
+      Util.log(this, "Storing connection key -> " + clientId + " : " + socket.id);
+
+      /// notified across all sockets in network
+      socket.on('error', (error) => {
+        Util.log(this, "Client error : " + socket.id + " -> " + error);
+      });
+      socket.on('disconnecting', (reason) => {
+        Util.log(this, "Client disconnecting : " + socket.id + " -> " + reason);
+      });
+      socket.on("disconnect", (reason) => {
+        Util.log(this, "Client disconnected : " + socket.id + " -> " + reason);
+      });
+
+      /// testing - auto-join a default wtf test room
+      socket.join('angry_teachers', (err) => {
+        if (err) throw err;
+        let rooms = Object.keys(socket.rooms);
+        console.log(rooms); // [ &lt;socket.id>, 'room 237' ]
+        io.to('angry_teachers').emit('an angry teacher has joined the classroom'); // broadcast to everyone in the room
+      });
+    });
+    return this;
+  }
+
+  begin() {
+    server.listen(this.port, () => {
+      Util.log(this, `Started on ${this.port}`)
+    });
+    return this;
+  }
+}
+
+module.exports = Talk;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Dec 23 2019 21:53:32 GMT-0600 (Central Standard Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
