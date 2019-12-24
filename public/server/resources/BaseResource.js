@@ -13,10 +13,6 @@ class BaseResource {
   constructor() {
   }
 
-  static init(sri, clazz) {
-    global.talk.express.post(sri, clazz);
-  }
-
   static handleUnknownSocket(req, res, dto) {
     let resDto = new SimpleStatusDto({
       status: "UNKNOWN",

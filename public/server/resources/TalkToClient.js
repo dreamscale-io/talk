@@ -1,5 +1,6 @@
 const Util = require("../Util"),
-  BaseResource = require("./BaseResource");
+  BaseResource = require("./BaseResource"),
+  RescAssembler = require("./ResourceAssembler");
 
 /**
  * Talk Resource class used to handle sending a direct message to a specific client connection
@@ -8,7 +9,7 @@ class TalkToClient extends BaseResource {
 
   constructor() {
     super();
-    BaseResource.init(TalkToClient.SRI, (..._) => TalkToClient.resource(..._));
+    RescAssembler.inject(TalkToClient.SRI, (..._) => TalkToClient.resource(..._));
   }
 
   static get SRI() {
