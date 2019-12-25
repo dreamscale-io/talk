@@ -3,6 +3,10 @@
  */
 class SimpleStatusDto {
 
+  /**
+   * builds our dto from the request.body, that is json
+   * @param json
+   */
   constructor(json) {
     try {
       if (typeof json === "string") json = JSON.parse(json);
@@ -14,13 +18,11 @@ class SimpleStatusDto {
     }
   }
 
+  /**
+   * converts the object into a readable string
+   */
   toString() {
     JSON.stringify(this);
-  }
-
-  isValid() {
-    if (this.status === "VALID") return true;
-    return false;
   }
 };
 

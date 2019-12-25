@@ -19,6 +19,9 @@ const express = require("express")(),
  */
 class Talk {
 
+  /**
+   * builds the Talk service into a server. stores the components into the service
+   */
   constructor() {
     this.express = express;
     this.server = server;
@@ -29,20 +32,34 @@ class Talk {
     express.use(bodyParser.urlencoded({extended: true}));
   }
 
+  /**
+   * called by the server class to build the service for use
+   * @returns {Talk} - the thing we built
+   */
   setup() {
     Util.log(null, "Starting Server...")
-    this.wireResourcesToServer();
+    this.wireApiToResources();
     this.configureSockets();
     return this;
   }
 
-  wireResourcesToServer() {
+  /**
+   * this function uses our resource assembler to generate the classes and
+   * service URLs used for express to handle our POST requests
+   * @returns {Talk}
+   */
+  wireApiToResources() {
     Util.log(this, "Wiring resources together")
     ResourceAssembler.inject(TalkToClient);
     ResourceAssembler.inject(TalkToRoom);
     return this;
   }
 
+  /**
+   * this function is used to configure out socket listeners for socket.io, and
+   * these are global listeners. try not to add stuff into here is possible
+   * @returns {Talk} - the talk service object for chaining
+   */
   configureSockets() {
     Util.log(this, "Configuring io sockets");
 
@@ -80,6 +97,10 @@ class Talk {
     return this;
   }
 
+  /**
+   * starts the server on the port specified by the cli argument
+   * @returns {Talk}
+   */
   begin() {
     server.listen(this.port, () => {
       Util.log(this, `Started on ${this.port}`)

@@ -10,9 +10,6 @@ const SimpleStatusDto = require("../dto/SimpleStatusDto"),
  */
 class BaseResource {
 
-  constructor() {
-  }
-
   static handleUnknownSocket(req, res, dto) {
     let resDto = new SimpleStatusDto({
       status: "UNKNOWN",

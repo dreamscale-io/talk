@@ -5,6 +5,10 @@ const Util = require("../Util");
  */
 class ClientConnectionDto {
 
+  /**
+   * builds our dto from the request.body object that is json
+   * @param request
+   */
   constructor(request) {
     try {
       if (typeof request === "string") request = JSON.parse(request);
