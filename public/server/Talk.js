@@ -1,6 +1,7 @@
 const express = require("express")(),
   server = require('http').Server(express),
   bodyParser = require("body-parser"),
+  ResourceAssembler = require("./resources/ResourceAssembler"),
   TalkToClient = require("./resources/TalkToClient"),
   TalkToRoom = require("./resources/TalkToRoom"),
   Util = require("./Util"),
@@ -23,7 +24,6 @@ class Talk {
     this.server = server;
     this.io = io;
     this.connections = new Map();
-    this.resources = new Map();
     this.port = process.env.PORT || 5050;
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
@@ -31,15 +31,15 @@ class Talk {
 
   setup() {
     Util.log(null, "Starting Server...")
-    this.wireResourcesTo();
+    this.wireResourcesToServer();
     this.configureSockets();
     return this;
   }
 
-  wireResourcesTo() {
+  wireResourcesToServer() {
     Util.log(this, "Wiring resources together")
-    this.resources.set(TalkToClient.SRI, new TalkToClient());
-    this.resources.set(TalkToRoom.SRI, new TalkToRoom());
+    ResourceAssembler.inject(TalkToClient);
+    ResourceAssembler.inject(TalkToRoom);
     return this;
   }
 

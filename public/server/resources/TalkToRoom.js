@@ -10,7 +10,7 @@ class TalkToRoom extends BaseResource {
 
   constructor() {
     super();
-    ResourceAssembler.inject(Api.URI.TalkToRoom, TalkToRoom);
+    ResourceAssembler.inject(TalkToRoom);
   }
 
   static resource(req, res) {

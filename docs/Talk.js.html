@@ -72,12 +72,12 @@ class Talk {
 
   setup() {
     Util.log(null, "Starting Server...")
-    this.wireResourcesTo();
+    this.wireResourcesToServer();
     this.configureSockets();
     return this;
   }
 
-  wireResourcesTo() {
+  wireResourcesToServer() {
     Util.log(this, "Wiring resources together")
     this.resources.set(TalkToClient.SRI, new TalkToClient());
     this.resources.set(TalkToRoom.SRI, new TalkToRoom());
