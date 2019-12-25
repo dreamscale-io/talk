@@ -10,7 +10,7 @@ class TalkToClient extends BaseResource {
 
   constructor() {
     super();
-    RescAssembler.inject(Api.URI.TalkToClient, (..._) => TalkToClient.resource(..._));
+    RescAssembler.inject(Api.URI.TalkToClient, TalkToClient);
   }
 
   static resource(req, res) {

@@ -5,7 +5,7 @@ class ResourceAssembler {
   }
 
   static inject(sri, clazz) {
-    global.talk.express.post(sri, clazz);
+    global.talk.express.post(sri, (..._) => clazz.resource(..._));
   }
 }
 
