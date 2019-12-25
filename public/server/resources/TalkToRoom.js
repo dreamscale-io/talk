@@ -1,6 +1,7 @@
 const Util = require("../Util"),
   BaseResource = require("./BaseResource"),
-  ResourceAssembler = require("./ResourceAssembler");
+  ResourceAssembler = require("./ResourceAssembler"),
+  Api = require("../Api");
 
 /**
  * Talk Resource class used for sending (broadcast) a message to an entire room
@@ -9,11 +10,7 @@ class TalkToRoom extends BaseResource {
 
   constructor() {
     super();
-    ResourceAssembler.inject(TalkToRoom.SRI, (..._) => TalkToRoom.resource(..._));
-  }
-
-  static get SRI() {
-    return "/talk/to/room/:roomId";
+    ResourceAssembler.inject(Api.URI.TalkToRoom, (..._) => TalkToRoom.resource(..._));
   }
 
   static resource(req, res) {
