@@ -5,18 +5,12 @@ const Talk = require("./Talk");
  */
 class Server {
 
-  /**
-   * a setup function used to get the server ready for start
-   */
-  static initialize() {
+  constructor() {
     global.talk = new Talk();
     global.talk.setup();
   }
 
-  /**
-   * starts the server on the given port
-   */
-  static start() {
+  start() {
     global.talk.begin();
   }
 }

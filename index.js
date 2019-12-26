@@ -1,2 +1,3 @@
-require("./public/server/Server").initialize();
-require("./public/server/Server").start();
+const Server = require("./public/Server");
+var server = new Server();
+server.start();

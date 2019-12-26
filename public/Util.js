@@ -1,4 +1,5 @@
-const chalk = require("chalk");
+const chalk = require("chalk"),
+  SimpleStatusDto = require("./dto/SimpleStatusDto");
 
 /**
  * Base Utility helper class for Talk, Server, and Friends!
@@ -127,9 +128,19 @@ class Util {
   static getConnectedSocketFrom(connectionId, req, res) {
     let socket = global.talk.io.sockets.connected[global.talk.connections.get(connectionId)];
     if (!socket) {
-      BaseResource.handleUnknownSocket(req, res, req.body);
+      Util.handleUnknownSocket(req, res, req.body);
     }
     return socket;
+  }
+
+  static handleUnknownSocket(req, res, dto) {
+    let resDto = new SimpleStatusDto({
+      status: "UNKNOWN",
+      message: "unable to locate the recipient on network",
+    });
+    Util.logPostRequest("POST", req.url, dto, resDto);
+    res.send(resDto);
+    return;
   }
 
   /**

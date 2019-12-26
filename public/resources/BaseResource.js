@@ -10,16 +10,6 @@ const SimpleStatusDto = require("../dto/SimpleStatusDto"),
  */
 class BaseResource {
 
-  static handleUnknownSocket(req, res, dto) {
-    let resDto = new SimpleStatusDto({
-      status: "UNKNOWN",
-      message: "unable to locate the recipient on network",
-    });
-    Util.logPostRequest("POST", req.url, dto, resDto);
-    res.send(resDto);
-    return;
-  }
-
   static handleUnknownRoom(req, res, dto) {
     let resDto = new SimpleStatusDto({
       status: "UNKNOWN",
