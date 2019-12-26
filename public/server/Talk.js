@@ -5,6 +5,7 @@ const express = require("express")(),
   TalkToClient = require("./resources/TalkToClient"),
   TalkToRoom = require("./resources/TalkToRoom"),
   JoinRoom = require("./resources/JoinRoom"),
+  LeaveRoom = require("./resources/LeaveRoom"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -54,6 +55,7 @@ class Talk {
     ResourceAssembler.inject(TalkToClient);
     ResourceAssembler.inject(TalkToRoom);
     ResourceAssembler.inject(JoinRoom);
+    ResourceAssembler.inject(LeaveRoom);
     return this;
   }
 
@@ -67,30 +69,22 @@ class Talk {
 
     this.io.on("connection", (socket) => {
       let connectionId = Util.getConnectionIdFromSocket(socket);
+      let isNewConnection = Util.isNewConnection(connectionId);
 
+      Util.log(this, "connection : " + connectionId + " -> " + socket.id + " = " +
+        (isNewConnection ? "fresh transport" : "recycled transport"));
+      Util.setConnectedSocket(connectionId, socket.id);
 
       // TODO implement Util.reportConnection(connectionId);
 
       // TODO make this comnditional for when we get a bad report back
 
-      Util.setConnectedSocket(connectionId, socket.id);
-
-      Util.log(this, "Storing connection key -> " + connectionId + " : " + socket.id);
-
-      /// notified across all sockets in network
       socket.on('error', (error) => {
         Util.log(this, "error : " + socket.id + " -> " + error);
       });
-      socket.on('disconnecting', (reason) => {
-        Util.log(this, "disconnecting : " + socket.id + " -> " + reason);
-      });
       socket.on("disconnect", (reason) => {
-        Util.log(this, "disconnected : " + socket.id + " -> " + reason);
+        Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + reason);
       });
-      // socket.on("join-room", (roomId) => {
-      //   Util.log(this, "join room -> " + socket.id + " -> " + roomId);
-      //   socket.join(roomId);
-      // });
     });
     return this;
   }

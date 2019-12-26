@@ -65,7 +65,7 @@ class BaseResource {
   }
 
   static joinRoom(req, res) {
-    let roomId = BaseResource.getRoomIdFromRequest(req);
+    let roomId = BaseResource.getRoomIdFromRequestUrlParam(req);
     let dto = new ClientConnectionDto(req.body);
     let socket = Util.getConnectedSocketFrom(dto.connectionId, req, res);
     socket.emit("join-room", roomId, (roomId) => {
@@ -85,25 +85,26 @@ class BaseResource {
   }
 
   static leaveRoom(req, res) {
-    let roomId = BaseResource.getRoomIdFromRequest(req);
+    let roomId = BaseResource.getRoomIdFromRequestUrlParam(req);
     let dto = new ClientConnectionDto(req.body);
     let socket = Util.getConnectedSocketFrom(dto.connectionId, req, res);
-    socket.leave(roomId, (err) => {
-      if (err) {
-        BaseResource.handleRoomError(err, req, res);
-        return;
-      }
-      let resDto = new SimpleStatusDto({
-        status: "LEFT",
-        message: "left '" + roomId + "' room",
+    socket.emit("leave-room", roomId, (roomId) => {
+      socket.leave(roomId, (err) => {
+        if (err) {
+          BaseResource.handleRoomError(err, req, res);
+          return;
+        }
+        let resDto = new SimpleStatusDto({
+          status: "LEAVE",
+          message: "left room '" + roomId + "'",
+        });
+        Util.logPostRequest("POST", req.url, dto, resDto);
+        res.send(resDto);
       });
-      Util.logPostRequest("POST", req.url, dto, resDto);
-      res.send(resDto);
     });
-
   }
 
-  static getRoomIdFromRequest(req, res) {
+  static getRoomIdFromRequestUrlParam(req, res) {
     let roomId = req.params.roomId;
     if (!roomId) {
       BaseResource.handleUnknownRoom(req, res, req.body);

@@ -15,7 +15,8 @@ class Api {
     return {
       TalkToClient: this.Paths.TALK + this.Paths.TO_CLIENT + this.Paths.PARAM_CLIENT_ID,
       TalkToRoom: this.Paths.TALK + this.Paths.TO_ROOM + this.Paths.PARAM_ROOM_ID,
-      JoinRoom: this.Paths.TALK + this.Paths.JOIN_ROOM + this.Paths.PARAM_ROOM_ID
+      JoinRoom: this.Paths.TALK + this.Paths.JOIN_ROOM + this.Paths.PARAM_ROOM_ID,
+      LeaveRoom: this.Paths.TALK + this.Paths.LEAVE_ROOM + this.Paths.PARAM_ROOM_ID
     }
   }
 
@@ -30,6 +31,7 @@ class Api {
       TO_CLIENT: "/to/client",
       TO_ROOM: "/to/room",
       JOIN_ROOM: "/join/room",
+      LEAVE_ROOM: "/leave/room",
       PARAM_CLIENT_ID: "/:client",
       PARAM_ROOM_ID: "/:roomId"
     }

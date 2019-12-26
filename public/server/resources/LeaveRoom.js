@@ -2,13 +2,13 @@ const Util = require("../Util"),
   BaseResource = require("./BaseResource");
 
 /**
- * Talk Resource class used to handle having a socket join a room
+ * Talk Resource class used to have a socket leave a room
  */
-class JoinRoom extends BaseResource {
+class LeaveRoom extends BaseResource {
 
   static resource(req, res) {
     try {
-      BaseResource.joinRoom(req, res);
+      BaseResource.leaveRoom(req, res);
     }
     catch (err) {
       Util.handleErr(err, req, res);
@@ -16,4 +16,4 @@ class JoinRoom extends BaseResource {
   }
 }
 
-module.exports = JoinRoom
+module.exports = LeaveRoom

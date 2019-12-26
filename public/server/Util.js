@@ -160,6 +160,15 @@ class Util {
   static getConnectionIdFromSocket(socket) {
     return socket.handshake.query.connectionId;
   }
+
+  /**
+   * general purpose function used to check our connection is new
+   * @param connectionId
+   * @returns {boolean}
+   */
+  static isNewConnection(connectionId) {
+    return !global.talk.connections.has(connectionId);
+  }
 };
 
 module.exports = Util;
