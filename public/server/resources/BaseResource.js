@@ -68,19 +68,20 @@ class BaseResource {
     let roomId = BaseResource.getRoomIdFromRequest(req);
     let dto = new ClientConnectionDto(req.body);
     let socket = Util.getConnectedSocketFrom(dto.connectionId, req, res);
-    socket.join(roomId, (err) => {
-      if (err) {
-        BaseResource.handleRoomError(err, req, res);
-        return;
-      }
-      let resDto = new SimpleStatusDto({
-        status: "JOINED",
-        message: "joined room '" + roomId + "'",
+    socket.emit("join-room", roomId, (roomId) => {
+      socket.join(roomId, (err) => {
+        if (err) {
+          BaseResource.handleRoomError(err, req, res);
+          return;
+        }
+        let resDto = new SimpleStatusDto({
+          status: "JOINED",
+          message: "joined room '" + roomId + "'",
+        });
+        Util.logPostRequest("POST", req.url, dto, resDto);
+        res.send(resDto);
       });
-      Util.logPostRequest("POST", req.url, dto, resDto);
-      res.send(resDto);
     });
-
   }
 
   static leaveRoom(req, res) {

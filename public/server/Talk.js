@@ -79,22 +79,18 @@ class Talk {
 
       /// notified across all sockets in network
       socket.on('error', (error) => {
-        Util.log(this, "Client error : " + socket.id + " -> " + error);
+        Util.log(this, "error : " + socket.id + " -> " + error);
       });
       socket.on('disconnecting', (reason) => {
-        Util.log(this, "Client disconnecting : " + socket.id + " -> " + reason);
+        Util.log(this, "disconnecting : " + socket.id + " -> " + reason);
       });
       socket.on("disconnect", (reason) => {
-        Util.log(this, "Client disconnected : " + socket.id + " -> " + reason);
+        Util.log(this, "disconnected : " + socket.id + " -> " + reason);
       });
-
-      /// testing - auto-join a default wtf test room
-      socket.join('angry_teachers', (err) => {
-        if (err) throw err;
-        let rooms = Object.keys(socket.rooms);
-        console.log(rooms); // [ <socket.id>, 'room 237' ]
-        io.to('angry_teachers').emit('an angry teacher has joined the classroom'); // broadcast to everyone in the room
-      });
+      // socket.on("join-room", (roomId) => {
+      //   Util.log(this, "join room -> " + socket.id + " -> " + roomId);
+      //   socket.join(roomId);
+      // });
     });
     return this;
   }
