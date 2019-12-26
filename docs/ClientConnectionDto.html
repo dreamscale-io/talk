@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Home - Documentation</title>
+    <title>ClientConnectionDto - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -29,53 +29,361 @@
 
 <div id="main">
     
+    <h1 class="page-title">ClientConnectionDto</h1>
+    
 
     
 
 
 
+
+<section>
+
+<header>
+    
+        <h2>
+        ClientConnectionDto
+        </h2>
+        
+            <div class="class-description">Object that is recieved by the REST interface for talk room members</div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+<div class="section-method">
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="ClientConnectionDto"><span class="type-signature"></span>new ClientConnectionDto<span class="signature">(request)</span><span class="type-signature"></span></h4>
+
     
 
 
 
+<div class="description">
+    builds our dto from the request.body object that is json
+</div>
 
 
 
 
 
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dto_ClientConnectionDto.js.html">dto/ClientConnectionDto.js</a>, <a href="dto_ClientConnectionDto.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        ClientConnectionDto
+        </h2>
+        
+            <div class="class-description">Object that is recieved by the REST interface for talk room members</div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+<div class="section-method">
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="ClientConnectionDto"><span class="type-signature"></span>new ClientConnectionDto<span class="signature">(request)</span><span class="type-signature"></span></h4>
 
     
 
 
-    <section class="readme">
-        <article><h1>talkServer</h1>
-<p>Realtime P2P Router</p>
-<h1>How to Setup &amp; Run</h1>
-<p>First, use the latest stable version of Node.  It changes stupid fast.  We try to stay current, fix what breaks.</p>
-<p><code>nvm use stable</code></p>
-<p>Next, install all the node modules with yarn.</p>
-<p><code>yarn install</code></p>
-<p>To run the express, we use the heroku client that runs the Procfile</p>
-<p><code>heroku local web</code></p>
-<h2>Specificiation:</h2>
-<ul>
-<li>Store socket and session for torchie clients</li>
-<li>use -&gt; https://github.com/wcamarao/session.socket.io</li>
-<li>Create socket layer for talkServer commands and messaging</li>
-<li>Create API for broadcast notification to all clients</li>
-<li>Create API for private notification to a specific client</li>
-<li>Create API for private message to a specific client</li>
-<li>Create API for creating new rooms</li>
-<li>Create API for destroying rooms</li>
-<li>Create API for sending message to room</li>
-</ul>
-<p>##NOTES:</p>
-<ul>
-<li>all requests are POST, and require two header properties called 'x-talk-key-to' &amp; 'x-talk-key-from'. These properties represent the transient connection ids of the sender and reciever.</li>
-</ul></article>
-    </section>
+
+<div class="description">
+    builds our dto from the request.body object that is json
+</div>
 
 
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="dto_ClientConnectionDto.js.html">dto/ClientConnectionDto.js</a>, <a href="dto_ClientConnectionDto.js.html#line12">line 12</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
