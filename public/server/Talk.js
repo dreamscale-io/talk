@@ -4,6 +4,7 @@ const express = require("express")(),
   ResourceAssembler = require("./resources/ResourceAssembler"),
   TalkToClient = require("./resources/TalkToClient"),
   TalkToRoom = require("./resources/TalkToRoom"),
+  JoinRoom = require("./resources/JoinRoom"),
   Util = require("./Util"),
   io = require('socket.io')(server, {
     serveClient: false,
@@ -52,6 +53,7 @@ class Talk {
     Util.log(this, "Wiring resources together")
     ResourceAssembler.inject(TalkToClient);
     ResourceAssembler.inject(TalkToRoom);
+    ResourceAssembler.inject(JoinRoom);
     return this;
   }
 

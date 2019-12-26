@@ -75,7 +75,7 @@ class BaseResource {
       }
       let resDto = new SimpleStatusDto({
         status: "JOINED",
-        message: "joined '" + roomId + "' room",
+        message: "joined room '" + roomId + "'",
       });
       Util.logPostRequest("POST", req.url, dto, resDto);
       res.send(resDto);
@@ -103,12 +103,12 @@ class BaseResource {
   }
 
   static getRoomIdFromRequest(req, res) {
-    let roomId = request.params.roomId;
+    let roomId = req.params.roomId;
     if (!roomId) {
       BaseResource.handleUnknownRoom(req, res, req.body);
       return;
     }
-    return request.params.roomId;
+    return roomId;
   }
 
   static get EventTypes() {
