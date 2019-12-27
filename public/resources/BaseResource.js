@@ -58,7 +58,7 @@ class BaseResource {
     let roomId = BaseResource.getRoomIdFromRequestUrlParam(req);
     let dto = new ClientConnectionDto(req.body);
     let socket = Util.getConnectedSocketFrom(dto.connectionId, req, res);
-    socket.emit("join-room", roomId, (roomId) => {
+    socket.emit("join_room", roomId, (roomId) => {
       socket.join(roomId, (err) => {
         if (err) {
           BaseResource.handleRoomError(err, req, res);
@@ -78,7 +78,7 @@ class BaseResource {
     let roomId = BaseResource.getRoomIdFromRequestUrlParam(req);
     let dto = new ClientConnectionDto(req.body);
     let socket = Util.getConnectedSocketFrom(dto.connectionId, req, res);
-    socket.emit("leave-room", roomId, (roomId) => {
+    socket.emit("leave_room", roomId, (roomId) => {
       socket.leave(roomId, (err) => {
         if (err) {
           BaseResource.handleRoomError(err, req, res);
@@ -105,8 +105,8 @@ class BaseResource {
 
   static get EventTypes() {
     return {
-      MESSAGE_ROOM: "message-room",
-      MESSAGE_CLIENT: "message-client"
+      MESSAGE_ROOM: "message_room",
+      MESSAGE_CLIENT: "message_client"
     }
   }
 }

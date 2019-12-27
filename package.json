@@ -7,6 +7,9 @@
   "author": "ZoeDreams <zoe@dreamscale.io>",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "11.15.0"
+  },
   "scripts": {
     "docs": "jsdoc public/* --configure .jsdoc.json --verbose"
   },
