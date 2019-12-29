@@ -23,7 +23,17 @@ class BaseResource {
   static handleRoomError(err, req, res, dto) {
     let resDto = new SimpleStatusDto({
       status: "ERROR",
-      message: "we encounter an error with the room : " + err.message
+      message: "we encountered an error with the room : " + err.message
+    });
+    Util.logPostRequest("POST", req.url, dto, resDto);
+    res.send(resDto);
+    return;
+  }
+
+  static handleClientError(err, req, res, dto) {
+    let resDto = new SimpleStatusDto({
+      status: "ERROR",
+      message: "we encountered a client error : " + err.message
     });
     Util.logPostRequest("POST", req.url, dto, resDto);
     res.send(resDto);
@@ -33,7 +43,11 @@ class BaseResource {
   static sendDirectMessage(req, res) {
     let dto = new TalkMessageDto(req.body);
     let socket = Util.getConnectedSocketFrom(dto.toId, req, res);
-    socket.emit(BaseResource.EventTypes.MESSAGE_CLIENT, dto.jsonBody, (data) => {
+    socket.emit(BaseResource.EventTypes.MESSAGE_CLIENT, dto.jsonBody, (err) => {
+      if(err){
+        BaseResource.handleClientError(err, req, res, dto);
+        return;
+      }
       let resDto = new SimpleStatusDto({
         status: "SENT",
         message: "direct message was sent",
