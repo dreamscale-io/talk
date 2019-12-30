@@ -19,31 +19,12 @@ class Util {
   }
 
   /**
-   * loggings specific for connecting sockets
-   * @param type
-   * @param message
-   * @param socket
-   */
-  static logSocketIORequest(type, message, socket) {
-    console.log(
-      chalk.magenta("[talk]") +
-      " " +
-      type +
-      " -> " +
-      message +
-      " :: " +
-      !socket ? "" : socket.id
-    );
-  }
-
-  /**
    * function used to log our incoming POST request
    * @param type
    * @param url
-   * @param dtoReq
-   * @param dtoRes
+   * @param dto
    */
-  static logPostRequest(type, url, dtoReq, dtoRes) {
+  static logRequest(type, url, dto, status) {
     console.log(
       chalk.magenta("[TALK]") +
       " " +
@@ -51,9 +32,9 @@ class Util {
       " -> " +
       url +
       " : REQ=" +
-      JSON.stringify(dtoReq) +
-      " : RES=" +
-      JSON.stringify(dtoRes)
+      JSON.stringify(dto) +
+      " : STATUS=" +
+      JSON.stringify(status)
     );
   }
 
@@ -110,37 +91,12 @@ class Util {
   }
 
   /**
-   * helper function used to check the value of an object to see its okay
-   * @param value
-   */
-  static checkValueOf(value) {
-    if (!value || value === "undefined" || value === "null" || value === "NaN") {
-      throw new Error("unable to parse json: invalid fromId");
-    }
-  }
-
-  /**
    * a general purpose lookup function used to get a connected socket from connection id
    * @param connectionId
-   * @param req
-   * @param res
    */
-  static getConnectedSocketFrom(connectionId, req, res) {
+  static getConnectedSocketFrom(connectionId) {
     let socket = global.talk.io.sockets.connected[global.talk.connections.get(connectionId)];
-    if (!socket) {
-      Util.handleUnknownSocket(req, res, req.body);
-    }
     return socket;
-  }
-
-  static handleUnknownSocket(req, res, dto) {
-    let resDto = new SimpleStatusDto({
-      status: "UNKNOWN",
-      message: "unable to locate the recipient on network",
-    });
-    Util.logPostRequest("POST", req.url, dto, resDto);
-    res.send(resDto);
-    return;
   }
 
   /**

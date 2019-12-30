@@ -24,6 +24,6 @@ class SimpleStatusDto {
   toString() {
     JSON.stringify(this);
   }
-};
+}
 
 module.exports = SimpleStatusDto;
