@@ -12,14 +12,16 @@ class TalkMessageDto {
   constructor(request) {
     try {
       if (typeof request === "string") request = JSON.parse(request);
-      this.fromId = request.fromId;
-      this.toId = request.toId;
-      this.nanoTime = request.nanoTime;
+      this.messageId = request.messageId;
+      this.originId = request.originId;
+      this.destinationId = request.destinationId;
+      this.messageTime = request.messageTime;
       this.messageType = request.messageType;
       this.jsonBody = request.jsonBody;
-      Util.checkValueOf(this.fromId);
-      Util.checkValueOf(this.toId);
-      Util.checkValueOf(this.nanoTime);
+      Util.checkValueOf(this.messageId);
+      Util.checkValueOf(this.originId);
+      Util.checkValueOf(this.destinationId);
+      Util.checkValueOf(this.messageTime);
       Util.checkValueOf(this.messageType);
       Util.checkValueOf(this.jsonBody);
     }

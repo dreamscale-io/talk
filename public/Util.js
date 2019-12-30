@@ -115,7 +115,7 @@ class Util {
    */
   static checkValueOf(value) {
     if (!value || value === "undefined" || value === "null" || value === "NaN") {
-      throw new Error("unable to parse json: invalid fromId");
+      throw new Error("unable to parse json: invalid value");
     }
   }
 

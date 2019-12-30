@@ -5,7 +5,7 @@ const SimpleStatusDto = require("../dto/SimpleStatusDto"),
 
 /**
  * the lowest of the low, grittiest of gritty, herrrreees BaseResource. This class can send
- * recieve, slice and dice its way into any and all little http post request that come into
+ * receive, slice and dice its way into any and all little http post request that come into
  * node. PS. implemented by all other resources
  */
 class BaseResource {
@@ -42,7 +42,7 @@ class BaseResource {
 
   static sendDirectMessage(req, res) {
     let dto = new TalkMessageDto(req.body);
-    let socket = Util.getConnectedSocketFrom(dto.toId, req, res);
+    let socket = Util.getConnectedSocketFrom(dto.destinationId, req, res);
     socket.emit(BaseResource.EventTypes.MESSAGE_CLIENT, dto.jsonBody, (err) => {
       if(err){
         BaseResource.handleClientError(err, req, res, dto);
@@ -59,7 +59,7 @@ class BaseResource {
 
   static sendRoomMessage(req, res) {
     let dto = new TalkMessageDto(req.body);
-    global.talk.io.to(dto.toId).emit(BaseResource.EventTypes.MESSAGE_ROOM, dto.jsonBody);
+    global.talk.io.to(dto.destinationId).emit(BaseResource.EventTypes.MESSAGE_ROOM, dto.jsonBody);
     let resDto = new SimpleStatusDto({
       status: "SENT",
       message: "message was sent to the room",
