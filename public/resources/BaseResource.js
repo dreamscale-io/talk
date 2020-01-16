@@ -21,12 +21,12 @@ class BaseResource {
 
   static get MessageStatusTypes() {
     return {
-      ERROR: "ERROR",
+      FAILED: "FAILED",
       SENT: "SENT",
       JOINED: "JOINED",
-      LEAVE: "LEAVE",
+      VALID: "VALID",
       UNKNOWN: "UNKNOWN",
-      RECEIVED: "RECEIVED"
+      NO_ACTION: "NO_ACTION"
     }
   }
 
@@ -118,8 +118,7 @@ class BaseResource {
   }
 
   static getRoomIdFromRequest(req) {
-    let roomId = req.params.roomId;
-    return roomId;
+    return req.params.roomId;
   }
 
   static getUnknownSocketStatus() {
@@ -129,7 +128,7 @@ class BaseResource {
     });
   }
 
-  static getDirectMessageStatus(err) {
+  static getDirectMessageStatus() {
     return new SimpleStatusDto({
       status: this.MessageStatusTypes.SENT,
       message: this.MessageStrings.SENT_MESSAGE
@@ -138,7 +137,7 @@ class BaseResource {
 
   static getDirectMessageErrorStatus(err) {
     return new SimpleStatusDto({
-      status: this.MessageStatusTypes.ERROR,
+      status: this.MessageStatusTypes.FAILED,
       message: err.message
     });
   }
@@ -159,21 +158,21 @@ class BaseResource {
 
   static getJoinRoomErrorStatus(err) {
     return new SimpleStatusDto({
-      status: BaseResource.MessageStatusTypes.ERROR,
+      status: BaseResource.MessageStatusTypes.FAILED,
       message: BaseResource.MessageStrings.ERROR_MESSAGE + err.message
     });
   }
 
   static getLeaveRoomStatus() {
     return new SimpleStatusDto({
-      status: BaseResource.MessageStatusTypes.LEAVE,
+      status: BaseResource.MessageStatusTypes.VALID,
       message: BaseResource.MessageStrings.LEAVE_ROOM
     });
   }
 
   static getLeaveRoomErrorStatus(err) {
     return new SimpleStatusDto({
-      status: BaseResource.MessageStatusTypes.ERROR,
+      status: BaseResource.MessageStatusTypes.FAILED,
       message: BaseResource.MessageStrings.ERROR_MESSAGE + err.message
     });
   }

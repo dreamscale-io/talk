@@ -33,6 +33,6 @@ yarn-error.log*
 .yarnclean
 .idea
 .vscode/
-torchie-desktop.iml
 
 .jshintrc
+talk.iml
