@@ -16,4 +16,4 @@ class TalkToClient extends BaseResource {
   }
 }
 
-module.exports = TalkToClient
+module.exports = TalkToClient;

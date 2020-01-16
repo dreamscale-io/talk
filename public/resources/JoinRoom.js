@@ -16,4 +16,4 @@ class JoinRoom extends BaseResource {
   }
 }
 
-module.exports = JoinRoom
+module.exports = JoinRoom;

@@ -16,4 +16,4 @@ class LeaveRoom extends BaseResource {
   }
 }
 
-module.exports = LeaveRoom
+module.exports = LeaveRoom;
