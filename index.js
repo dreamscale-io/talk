@@ -1,6 +1,7 @@
 /**
  * Application Metrics
  */
+require('appmetrics-dash').attach();
 var appmetrics = require('appmetrics');
 var monitoring = appmetrics.monitor();
 monitoring.on('initialized', function (env) {
