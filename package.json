@@ -14,6 +14,7 @@
     "docs": "jsdoc public/* --configure .jsdoc.json --verbose"
   },
   "dependencies": {
+    "appmetrics": "^5.1.1",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "express": "^4.17.1",

@@ -1,1 +1,1 @@
-web: node index.js
+web: node --require appmetrics/start index.js
