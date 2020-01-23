@@ -49,7 +49,7 @@ class Talk {
       }, {
         interval: 5,
         retention: 12
-      }{
+      }, {
         interval: 20,
         retention: 12
       }, {
@@ -60,7 +60,8 @@ class Talk {
         protocol: 'https',
         host: 'talk.dreamscale.io',
         path: '/talk/to/client'
-      }]
+      }],
+      ignoreStartsWith: '/status'
     });
     express.use(this.statusMonitor.middleware);
     express.use(helmet());
