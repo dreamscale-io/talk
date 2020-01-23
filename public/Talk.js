@@ -47,11 +47,11 @@ class Talk {
         interval: 1,
         retention: 900
       }, {
-        interval: 5,
-        retention: 720
+        interval: 10,
+        retention: 360
       }, {
-        interval: 15,
-        retention: 960
+        interval: 30,
+        retention: 480
       }],
       ignoreStartsWith: '/status'
     });
