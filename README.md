@@ -14,8 +14,13 @@ To run the express, we use the heroku client that runs the Procfile
 
 `heroku local web`
 
+Once running you may view the servers status by going to 
+
+`http|s://admin:p@ssw0rd123@<your_host>/status`
+
 ## Specificiation:
 - Store socket and session for torchie clients
+- caches connection id to socket id map
 - use -> https://github.com/wcamarao/session.socket.io
 - Create socket layer for talkServer commands and messaging
 - Create API for broadcast notification to all clients
@@ -24,7 +29,4 @@ To run the express, we use the heroku client that runs the Procfile
 - Create API for creating new rooms
 - Create API for destroying rooms
 - Create API for sending message to room
-
-##NOTES:
-- all requests are POST, and require two header properties called 'x-talk-key-to' & 'x-talk-key-from'. These properties represent the transient connection ids of the sender and reciever.
  
