@@ -45,7 +45,7 @@ class Talk {
       websocket: io,
       spans: [{
         interval: 1,
-        retention: 240
+        retention: 900
       }, {
         interval: 5,
         retention: 240
