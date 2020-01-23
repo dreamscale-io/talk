@@ -52,6 +52,9 @@ class Talk {
       }, {
         interval: 30,
         retention: 480
+      }, {
+        interval: 60,
+        retention: 1440
       }],
       ignoreStartsWith: '/status'
     });
