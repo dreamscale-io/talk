@@ -1,6 +1,8 @@
 const express = require("express")(),
   server = require('http').Server(express),
-  statusMonitor = require("express-status-monitor")(),
+  auth = require('http-auth'),
+  ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn(),
+  statusMonitor = require("express-status-monitor")({ path: '' }),
   bodyParser = require("body-parser"),
   ResourceAssembler = require("./resources/ResourceAssembler"),
   TalkToClient = require("./resources/TalkToClient"),
@@ -8,6 +10,9 @@ const express = require("express")(),
   JoinRoom = require("./resources/JoinRoom"),
   LeaveRoom = require("./resources/LeaveRoom"),
   Util = require("./Util"),
+  basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback) {
+    callback(user === 'admin' && pass === 'p@ssw0rd123');
+  }),
   io = require('socket.io')(server, {
     serveClient: false,
     allowUpgrades: true,
@@ -16,6 +21,8 @@ const express = require("express")(),
     transports: ["polling", "websocket"],
     cookie: false
   });
+
+// TODO we should use better security with passport npm module
 
 /**
  * The core class that defines who and what the Talk server is
@@ -31,7 +38,8 @@ class Talk {
     this.io = io;
     this.connections = new Map();
     this.port = process.env.PORT || 5050;
-    express.use(statusMonitor);
+    express.use(statusMonitor.middleware);
+    express.get('/status', auth.connect(basic), statusMonitor.pageRoute);
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
   }
