@@ -39,9 +39,12 @@ class Talk {
     this.connections = new Map();
     this.port = process.env.PORT || 5050;
     express.use(statusMonitor.middleware);
-    express.get('/status', auth.connect(basic), statusMonitor.pageRoute);
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
+    express.get('*', function(req, res) {
+      res.redirect('https://' + req.headers.host + req.url);
+    })
+    express.get('/status', auth.connect(basic), statusMonitor.pageRoute);
   }
 
   /**
