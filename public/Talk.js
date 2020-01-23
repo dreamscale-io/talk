@@ -51,7 +51,7 @@ class Talk {
         retention: 300
       }, {
         interval: 1,
-        retention: 900
+        retention: 1200
       }, {
         interval: 10,
         retention: 360
