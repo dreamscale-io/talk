@@ -43,7 +43,7 @@ class Talk {
     express.use(helmet());
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
-    express.get('*', function(req, res) {
+    express.get('/status', function(req, res) {
       res.redirect('https://' + req.headers.host + req.url);
     })
     express.get('/status', auth.connect(basic), statusMonitor.pageRoute);
