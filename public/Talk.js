@@ -50,11 +50,8 @@ class Talk {
         interval: 1,
         retention: 300
       }, {
-        interval: 5,
-        retention: 200
-      }, {
         interval: 20,
-        retention: 210
+        retention: 180
       }],
       ignoreStartsWith: '/status'
     });
