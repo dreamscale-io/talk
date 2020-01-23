@@ -56,11 +56,6 @@ class Talk {
         interval: 60,
         retention: 24
       }],
-      healthChecks: [{
-        protocol: 'https',
-        host: 'talk.dreamscale.io',
-        path: '/talk/to/client'
-      }],
       ignoreStartsWith: '/status'
     });
     express.use(this.statusMonitor.middleware);
