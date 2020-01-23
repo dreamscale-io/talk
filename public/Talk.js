@@ -1,5 +1,6 @@
 const express = require("express")(),
   server = require('http').Server(express),
+  statusMonitor = require("express-status-monitor")(),
   bodyParser = require("body-parser"),
   ResourceAssembler = require("./resources/ResourceAssembler"),
   TalkToClient = require("./resources/TalkToClient"),
@@ -30,6 +31,7 @@ class Talk {
     this.io = io;
     this.connections = new Map();
     this.port = process.env.PORT || 5050;
+    express.use(statusMonitor);
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
   }
