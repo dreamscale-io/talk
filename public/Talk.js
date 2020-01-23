@@ -3,7 +3,7 @@ const express = require("express")(),
   helmet = require('helmet'),
   auth = require('http-auth'),
   ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn(),
-  statusMonitor = require("express-status-monitor")({ path: '' }),
+  StatusMonitor = require("express-status-monitor"),
   bodyParser = require("body-parser"),
   ResourceAssembler = require("./resources/ResourceAssembler"),
   TalkToClient = require("./resources/TalkToClient"),
@@ -11,7 +11,7 @@ const express = require("express")(),
   JoinRoom = require("./resources/JoinRoom"),
   LeaveRoom = require("./resources/LeaveRoom"),
   Util = require("./Util"),
-  basic = auth.basic({realm: 'Monitor Area'}, function(user, pass, callback) {
+  basic = auth.basic({realm: 'Monitor Area'}, function (user, pass, callback) {
     callback(user === 'admin' && pass === 'p@ssw0rd123');
   }),
   io = require('socket.io')(server, {
@@ -39,11 +39,34 @@ class Talk {
     this.io = io;
     this.connections = new Map();
     this.port = process.env.PORT || 5050;
-    express.use(statusMonitor.middleware);
+    this.statusMonitor = StatusMonitor({
+      title: "Talk - Status - DreamScale.io",
+      path: '',
+      websocket: io,
+      spans: [{
+        interval: 1,
+        retention: 60
+      }, {
+        interval: 5,
+        retention: 12
+      }{
+        interval: 20,
+        retention: 12
+      }, {
+        interval: 60,
+        retention: 24
+      }],
+      healthChecks: [{
+        protocol: 'https',
+        host: 'talk.dreamscale.io',
+        path: '/talk/to/client'
+      }]
+    });
+    express.use(this.statusMonitor.middleware);
     express.use(helmet());
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
-    express.get('/status', auth.connect(basic), statusMonitor.pageRoute);
+    express.get('/status', auth.connect(basic), this.statusMonitor.pageRoute);
   }
 
   /**
