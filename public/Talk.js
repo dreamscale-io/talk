@@ -45,16 +45,13 @@ class Talk {
       websocket: io,
       spans: [{
         interval: 1,
-        retention: 60
+        retention: 240
       }, {
         interval: 5,
-        retention: 12
+        retention: 240
       }, {
-        interval: 20,
-        retention: 12
-      }, {
-        interval: 60,
-        retention: 24
+        interval: 15,
+        retention: 240
       }],
       ignoreStartsWith: '/status'
     });
