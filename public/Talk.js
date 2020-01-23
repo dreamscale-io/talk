@@ -40,7 +40,7 @@ class Talk {
     this.connections = new Map();
     this.port = process.env.PORT || 5050;
     this.statusMonitor = StatusMonitor({
-      title: "Talk - Status - DreamScale.io",
+      title: "Status - Talk | DreamScale.io",
       path: '',
       websocket: io,
       spans: [{
