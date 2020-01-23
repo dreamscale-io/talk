@@ -19,6 +19,7 @@
     "connect-ensure-login": "^0.1.1",
     "express": "^4.17.1",
     "express-status-monitor": "^1.2.8",
+    "helmet": "^3.21.2",
     "http-auth": "^3.2.4",
     "socket.io": "^2.2.0"
   },

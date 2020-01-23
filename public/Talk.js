@@ -1,5 +1,6 @@
 const express = require("express")(),
   server = require('http').Server(express),
+  helmet = require('helmet'),
   auth = require('http-auth'),
   ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn(),
   statusMonitor = require("express-status-monitor")({ path: '' }),
@@ -39,6 +40,7 @@ class Talk {
     this.connections = new Map();
     this.port = process.env.PORT || 5050;
     express.use(statusMonitor.middleware);
+    express.use(helmet());
     express.use(bodyParser.json());
     express.use(bodyParser.urlencoded({extended: true}));
     express.get('*', function(req, res) {
