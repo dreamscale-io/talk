@@ -13,9 +13,11 @@ class TalkMessageDto {
       this.id = request.id;
       this.uri = request.uri;
       this.messageTime = request.messageTime;
+      this.nanoTime = request.nanoTime;
+      this.metaProps = request.metaProps;
       this.messageType = request.messageType;
       this.metaProps = request.metaProps;
-      this.jsonBody = request.jsonBody;
+      this.data = request.data;
     }
     catch (e) {
       throw new Error("Unable to create json : " + e.message);
