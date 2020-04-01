@@ -118,7 +118,7 @@ class Talk {
    * @param socket
    */
   authConnection(authUrl, connectionId, isNewConnection, socket) {
-    Util.log(this, "authenticating : " + connectionId + " -> " + authUrl);
+    Util.log(this, "AUTHENTICATING : " + connectionId + " -> " + authUrl);
 
     request
     .post(authUrl + '/account/connect')
@@ -147,7 +147,7 @@ class Talk {
    * @param socket
    */
   connectSocket(connectionId, isNewConnection, socket) {
-    Util.log(this, "connection : " + connectionId + " -> " + socket.id + " = " +
+    Util.log(this, "CONNECTED : " + connectionId + " -> " + socket.id + " = " +
       (isNewConnection ? "fresh transport" : "recycled transport"));
 
     Util.setConnectedSocket(connectionId, socket.id);
@@ -167,7 +167,7 @@ class Talk {
    * @param err
    */
   disconnect(socket, connectionId, err) {
-    Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + err);
+    Util.log(this, "DISCONNECT : " + connectionId + " -> " + socket.id + " = " + err);
     socket.disconnect(true);
   }
 
