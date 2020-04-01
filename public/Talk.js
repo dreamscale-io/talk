@@ -101,7 +101,7 @@ class Talk {
       let authUrl = Util.getAuthUrlFromArgs();
 
       if(authUrl) {
-        this.authConnection(authUrl);
+        this.authConnection(authUrl, connectionId, isNewConnection, socket);
       } else {
         this.connectSocket(connectionId, isNewConnection, socket);
       }
@@ -109,7 +109,7 @@ class Talk {
     return this;
   }
 
-  authConnection(connectionId, isNewConnection, socket) {
+  authConnection(authUrl, connectionId, isNewConnection, socket) {
     Util.log(this, "authenticate : " + connectionId + " -> " + socket.id);
     this.connectSocket(connectionId, isNewConnection, socket)
   }
