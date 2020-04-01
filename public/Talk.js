@@ -120,6 +120,7 @@ class Talk {
       response: 20000,
       deadline: 30000
     })
+    .set("X-CONNECT-ID", connectionId)
     .set("Content-Type", "application/json")
     .end((err, res) => {
       // console.log(err);
