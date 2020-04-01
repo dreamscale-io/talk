@@ -103,15 +103,22 @@ class Talk {
 
       if(authUrl) {
         this.authConnection(authUrl, connectionId, isNewConnection, socket);
-      } else {
+      }  else {
         this.connectSocket(connectionId, isNewConnection, socket);
       }
     });
     return this;
   }
 
+  /**
+   * authenticates our socket connection with our specific auth server defined at start up
+   * @param authUrl
+   * @param connectionId
+   * @param isNewConnection
+   * @param socket
+   */
   authConnection(authUrl, connectionId, isNewConnection, socket) {
-    Util.log(this, "authenticate : " + authUrl + " -> " + connectionId);
+    Util.log(this, "authenticate : " + connectionId + " -> " + authUrl);
 
     request
     .post(authUrl + '/account/connect')
@@ -123,20 +130,26 @@ class Talk {
     .set("X-CONNECT-ID", connectionId)
     .set("Content-Type", "application/json")
     .end((err, res) => {
-      // console.log(err);
       if(err) {
-        console.log("*** Error",  err);
-        return;
+        this.disconnect(socket, connectionId, err.toString());
+      } else if(connectionId !== res.body.connectionId){
+        this.disconnect(socket, connectionId, 'Connection Id Mismatch');
+      } else {
+        this.connectSocket(connectionId, isNewConnection, socket);
       }
-      console.log("*** Success", res.body);
     });
-
-    this.connectSocket(connectionId, isNewConnection, socket)
   }
 
+  /**
+   * connects our socket after we have authenticated it
+   * @param connectionId
+   * @param isNewConnection
+   * @param socket
+   */
   connectSocket(connectionId, isNewConnection, socket) {
     Util.log(this, "connection : " + connectionId + " -> " + socket.id + " = " +
       (isNewConnection ? "fresh transport" : "recycled transport"));
+
     Util.setConnectedSocket(connectionId, socket.id);
 
     socket.on('error', (error) => {
@@ -145,6 +158,17 @@ class Talk {
     socket.on("disconnect", (reason) => {
       Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + reason);
     });
+  }
+
+  /**
+   * disconnect our socket from the server
+   * @param socket
+   * @param connectionId
+   * @param err
+   */
+  disconnect(socket, connectionId, err) {
+    Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + err);
+    socket.disconnect(true);
   }
 
   /**

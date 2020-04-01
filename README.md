@@ -18,6 +18,8 @@ Once running you may view the servers status by going to
 
 `http|s://admin:p@ssw0rd123@<your_host>/status`
 
+NOTE: use 'AUTH=<your_host>/account/connect' for your own custom authentication server. See 'Procfile' for more information.
+
 ## Specificiation:
 - Store socket and session for torchie clients
 - caches connection id to socket id map

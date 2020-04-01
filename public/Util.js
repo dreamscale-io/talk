@@ -136,6 +136,10 @@ class Util {
     return !global.talk.connections.has(connectionId);
   }
 
+  /**
+   * gets our authentication url that was passed in by our start arguments
+   * @returns {null}
+   */
   static getAuthUrlFromArgs() {
     let authUrl = null;
     process.argv.forEach((val, index, array)  => {
