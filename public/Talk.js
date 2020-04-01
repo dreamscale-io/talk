@@ -133,7 +133,7 @@ class Talk {
       if(err) {
         this.disconnect(socket, connectionId, err.toString());
       } else if(connectionId !== res.body.connectionId){
-        this.disconnect(socket, connectionId, 'Connection Id Mismatch');
+        this.disconnect(socket, connectionId, 'Authentication Failure: Connection Id Mismatch');
       } else {
         this.connectSocket(connectionId, isNewConnection, socket);
       }
