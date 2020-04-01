@@ -118,7 +118,7 @@ class Talk {
    * @param socket
    */
   authConnection(authUrl, connectionId, isNewConnection, socket) {
-    Util.log(this, "authenticate : " + connectionId + " -> " + authUrl);
+    Util.log(this, "authenticating : " + connectionId + " -> " + authUrl);
 
     request
     .post(authUrl + '/account/connect')
