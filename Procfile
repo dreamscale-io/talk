@@ -1,2 +1,2 @@
-web: node index.js
+web: node index.js AUTH=https://gridtime.dreamscale.io
 

@@ -135,6 +135,17 @@ class Util {
   static isNewConnection(connectionId) {
     return !global.talk.connections.has(connectionId);
   }
+
+  static getAuthUrlFromArgs() {
+    let authUrl = null;
+    process.argv.forEach((val, index, array)  => {
+      if(val.toUpperCase().startsWith("AUTH")) {
+        authUrl =  val.substring(5);
+      }
+    });
+    console.log(authUrl);
+    return authUrl;
+  }
 };
 
 module.exports = Util;
