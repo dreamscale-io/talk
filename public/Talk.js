@@ -24,8 +24,6 @@ const express = require("express")(),
     cookie: false
   });
 
-// TODO we should use better security with passport npm module
-
 /**
  * The core class that defines who and what the Talk server is
  */
@@ -69,8 +67,8 @@ class Talk {
    */
   setup() {
     Util.log(null, "Starting Server...")
-    this.wireApiToResources();
-    this.configureSockets();
+    this.wire();
+    this.configure();
     return this;
   }
 
@@ -79,8 +77,7 @@ class Talk {
    * service URLs used for express to handle our POST requests
    * @returns {Talk}
    */
-  wireApiToResources() {
-    Util.log(this, "Wiring resources together")
+  wire() {
     ResourceAssembler.inject(TalkToClient);
     ResourceAssembler.inject(TalkToRoom);
     ResourceAssembler.inject(JoinRoom);
@@ -93,18 +90,16 @@ class Talk {
    * these are global listeners. try not to add stuff into here is possible
    * @returns {Talk} - the talk service object for chaining
    */
-  configureSockets() {
-    Util.log(this, "Configuring io sockets");
-
+  configure() {
     this.io.on("connection", (socket) => {
       let connectionId = Util.getConnectionIdFromSocket(socket);
       let isNewConnection = Util.isNewConnection(connectionId);
       let authUrl = Util.getAuthUrlFromArgs();
 
       if(authUrl) {
-        this.authConnection(authUrl, connectionId, isNewConnection, socket);
+        this.authenticate(authUrl, connectionId, isNewConnection, socket);
       }  else {
-        this.connectSocket(connectionId, isNewConnection, socket);
+        this.connect(connectionId, isNewConnection, socket);
       }
     });
     return this;
@@ -117,7 +112,7 @@ class Talk {
    * @param isNewConnection
    * @param socket
    */
-  authConnection(authUrl, connectionId, isNewConnection, socket) {
+  authenticate(authUrl, connectionId, isNewConnection, socket) {
     Util.log(this, "AUTHENTICATING : " + connectionId + " -> " + authUrl);
 
     request
@@ -135,7 +130,7 @@ class Talk {
       } else if(connectionId !== res.body.connectionId){
         this.disconnect(socket, connectionId, 'Authentication Failure: Connection Id Mismatch');
       } else {
-        this.connectSocket(connectionId, isNewConnection, socket);
+        this.connect(connectionId, isNewConnection, socket);
       }
     });
   }
@@ -146,7 +141,7 @@ class Talk {
    * @param isNewConnection
    * @param socket
    */
-  connectSocket(connectionId, isNewConnection, socket) {
+  connect(connectionId, isNewConnection, socket) {
     Util.log(this, "CONNECTED : " + connectionId + " -> " + socket.id + " = " +
       (isNewConnection ? "fresh transport" : "recycled transport"));
 
