@@ -95,8 +95,7 @@ class Util {
    * @param connectionId
    */
   static getConnectedSocketFrom(connectionId) {
-    let socket = global.talk.io.sockets.connected[global.talk.connections.get(connectionId)];
-    return socket;
+    return global.talk.io.sockets.connected[global.talk.connections.get(connectionId)];
   }
 
   /**
