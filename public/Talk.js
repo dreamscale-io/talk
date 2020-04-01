@@ -96,10 +96,10 @@ class Talk {
       let isNewConnection = Util.isNewConnection(connectionId);
       let authUrl = Util.getAuthUrlFromArgs();
 
+      this.connect(connectionId, isNewConnection, socket);
+
       if(authUrl) {
         this.authenticate(authUrl, connectionId, isNewConnection, socket);
-      }  else {
-        this.connect(connectionId, isNewConnection, socket);
       }
     });
     return this;
@@ -113,8 +113,6 @@ class Talk {
    * @param socket
    */
   authenticate(authUrl, connectionId, isNewConnection, socket) {
-    Util.log(this, "AUTHENTICATING : " + connectionId + " -> " + authUrl);
-
     request
     .post(authUrl + '/account/connect')
     .send({ connectionId: connectionId })
@@ -130,7 +128,7 @@ class Talk {
       } else if(connectionId !== res.body.connectionId){
         this.disconnect(socket, connectionId, 'Authentication Failure: Connection Id Mismatch');
       } else {
-        this.connect(connectionId, isNewConnection, socket);
+        Util.log(this, "AUTHENTICATED : " + connectionId + " -> " + authUrl);
       }
     });
   }
@@ -142,9 +140,6 @@ class Talk {
    * @param socket
    */
   connect(connectionId, isNewConnection, socket) {
-    Util.log(this, "CONNECTED : " + connectionId + " -> " + socket.id + " = " +
-      (isNewConnection ? "fresh transport" : "recycled transport"));
-
     Util.setConnectedSocket(connectionId, socket.id);
 
     socket.on('error', (error) => {
@@ -153,6 +148,9 @@ class Talk {
     socket.on("disconnect", (reason) => {
       Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + reason);
     });
+
+    Util.log(this, "CONNECTED : " + connectionId + " -> " + socket.id + " = " +
+      (isNewConnection ? "fresh transport" : "recycled transport"));
   }
 
   /**
