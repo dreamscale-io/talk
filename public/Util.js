@@ -143,7 +143,6 @@ class Util {
         authUrl =  val.substring(5);
       }
     });
-    console.log(authUrl);
     return authUrl;
   }
 };

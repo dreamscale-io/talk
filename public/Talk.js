@@ -100,20 +100,31 @@ class Talk {
       let isNewConnection = Util.isNewConnection(connectionId);
       let authUrl = Util.getAuthUrlFromArgs();
 
-      console.log(authUrl);
-
-      Util.log(this, "connection : " + connectionId + " -> " + socket.id + " = " +
-        (isNewConnection ? "fresh transport" : "recycled transport"));
-      Util.setConnectedSocket(connectionId, socket.id);
-
-      socket.on('error', (error) => {
-        Util.log(this, "error : " + socket.id + " -> " + error);
-      });
-      socket.on("disconnect", (reason) => {
-        Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + reason);
-      });
+      if(authUrl) {
+        this.authConnection(authUrl);
+      } else {
+        this.connectSocket(connectionId, isNewConnection, socket);
+      }
     });
     return this;
+  }
+
+  authConnection(connectionId, isNewConnection, socket) {
+    Util.log(this, "authenticate : " + connectionId + " -> " + socket.id);
+    this.connectSocket(connectionId, isNewConnection, socket)
+  }
+
+  connectSocket(connectionId, isNewConnection, socket) {
+    Util.log(this, "connection : " + connectionId + " -> " + socket.id + " = " +
+      (isNewConnection ? "fresh transport" : "recycled transport"));
+    Util.setConnectedSocket(connectionId, socket.id);
+
+    socket.on('error', (error) => {
+      Util.log(this, "error : " + socket.id + " -> " + error);
+    });
+    socket.on("disconnect", (reason) => {
+      Util.log(this, "disconnect : " + connectionId + " -> " + socket.id + " = " + reason);
+    });
   }
 
   /**
