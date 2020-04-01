@@ -98,14 +98,13 @@ class Talk {
     this.io.on("connection", (socket) => {
       let connectionId = Util.getConnectionIdFromSocket(socket);
       let isNewConnection = Util.isNewConnection(connectionId);
+      let authUrl = Util.getAuthUrlFromArgs();
+
+      console.log(authUrl);
 
       Util.log(this, "connection : " + connectionId + " -> " + socket.id + " = " +
         (isNewConnection ? "fresh transport" : "recycled transport"));
       Util.setConnectedSocket(connectionId, socket.id);
-
-      // TODO implement Util.reportConnection(connectionId);
-
-      // TODO make this comnditional for when we get a bad report back
 
       socket.on('error', (error) => {
         Util.log(this, "error : " + socket.id + " -> " + error);
