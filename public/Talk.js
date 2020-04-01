@@ -1,5 +1,6 @@
 const express = require("express")(),
   server = require('http').Server(express),
+  request = require('superagent'),
   helmet = require('helmet'),
   auth = require('http-auth'),
   ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn(),
@@ -110,7 +111,25 @@ class Talk {
   }
 
   authConnection(authUrl, connectionId, isNewConnection, socket) {
-    Util.log(this, "authenticate : " + connectionId + " -> " + socket.id);
+    Util.log(this, "authenticate : " + authUrl + " -> " + connectionId);
+
+    request
+    .post(authUrl + '/account/connect')
+    .send({ connectionId: connectionId })
+    .timeout({
+      response: 20000,
+      deadline: 30000
+    })
+    .set("Content-Type", "application/json")
+    .end((err, res) => {
+      // console.log(err);
+      if(err) {
+        console.log("*** Error",  err);
+        return;
+      }
+      console.log("*** Success", res.body);
+    });
+
     this.connectSocket(connectionId, isNewConnection, socket)
   }
 
