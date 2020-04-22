@@ -123,7 +123,7 @@ class Talk {
     .set("X-CONNECT-ID", connectionId)
     .set("Content-Type", "application/json")
     .end((err, res) => {
-      console.log(res);
+      console.log(res.body);
       if(err) {
         this.disconnect(socket, connectionId, err.toString());
       } else if(connectionId !== res.body.connectionId){
