@@ -106,7 +106,8 @@ class Talk {
   }
 
   /**
-   * authenticates our socket connection with our specific auth server defined at start up
+   * authenticates our socket connection with our specific auth server defined at start up. Returns a
+   * SimpleStatusMessageDto.
    * @param authUrl
    * @param connectionId
    * @param isNewConnection
@@ -123,11 +124,10 @@ class Talk {
     .set("X-CONNECT-ID", connectionId)
     .set("Content-Type", "application/json")
     .end((err, res) => {
-      console.log(res.body);
       if(err) {
         this.disconnect(socket, connectionId, err.toString());
-      } else if(connectionId !== res.body.connectionId){
-        this.disconnect(socket, connectionId, 'Authentication Failure: Connection Id Mismatch');
+      } else if(res.body.status !== "VALID"){
+        this.disconnect(socket, connectionId, res.body.message);
       } else {
         Util.log(this, "AUTHENTICATED : " + connectionId + " -> " + authUrl);
       }
