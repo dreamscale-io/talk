@@ -92,9 +92,14 @@ class Talk {
    */
   configure() {
     this.io.on("connection", (socket) => {
-      let connectionId = Util.getConnectionIdFromSocket(socket);
-      let isNewConnection = Util.isNewConnection(connectionId);
-      let authUrl = Util.getAuthUrlFromArgs();
+      let connectionId = Util.getConnectionIdFromSocket(socket),
+        isNewConnection = Util.isNewConnection(connectionId),
+        authUrl = Util.getAuthUrlFromArgs();
+
+      if(!connectionId) {
+        connectionId = "STATUS";
+        return;
+      }
 
       this.connect(connectionId, isNewConnection, socket);
 
@@ -102,6 +107,7 @@ class Talk {
         this.authenticate(authUrl, connectionId, isNewConnection, socket);
       }
     });
+
     return this;
   }
 

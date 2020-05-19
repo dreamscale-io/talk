@@ -11,11 +11,17 @@ class Util {
    * @param clazz
    * @param msg
    */
-  static log(clazz, msg) {
+  static log(clazz, msg, warn) {
     if (!clazz) clazz = {constructor: {name: "Talk"}};
-    console.log(
-      chalk.blue("[" + clazz.constructor.name + "]") + " " + msg
-    );
+    if(warn) {
+      console.log(
+        chalk.yellow("[" + clazz.constructor.name + "] [WARN]") + " " + msg
+      );
+    } else {
+      console.log(
+        chalk.blue("[" + clazz.constructor.name + "]") + " " + msg
+      );
+    }
   }
 
   /**
